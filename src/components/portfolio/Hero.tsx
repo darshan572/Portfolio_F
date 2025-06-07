@@ -476,13 +476,17 @@ const Hero: React.FC = () => {
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center cursor-pointer"
+          className={`w-6 h-10 border-2 rounded-full flex justify-center cursor-pointer transition-colors duration-500 ${
+            isDark ? "border-gray-600" : "border-gray-400"
+          }`}
           data-magnetic
         >
           <motion.div
             animate={{ y: [0, 12, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-1 h-3 bg-gray-600 rounded-full mt-2"
+            className={`w-1 h-3 rounded-full mt-2 transition-colors duration-500 ${
+              isDark ? "bg-gray-600" : "bg-gray-400"
+            }`}
           />
         </motion.div>
       </motion.div>
