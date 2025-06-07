@@ -3,6 +3,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Portfolio from "@/pages/Portfolio";
 import Login from "@/pages/admin/Login";
 import Dashboard from "@/pages/admin/Dashboard";
+import AboutEditor from "@/pages/admin/AboutEditor";
+import SkillsManager from "@/pages/admin/SkillsManager";
+import ProjectsManager from "@/pages/admin/ProjectsManager";
+import CertificationsManager from "@/pages/admin/CertificationsManager";
+import ContactAnalytics from "@/pages/admin/ContactAnalytics";
 import "@/styles/engineering-theme.css";
 import "@/styles/animations.css";
 
@@ -13,17 +18,21 @@ function App() {
         {/* Public Portfolio */}
         <Route path="/" element={<Portfolio />} />
 
-        {/* Admin Routes */}
+        {/* Admin Login */}
         <Route path="/admin" element={<Login />} />
+
+        {/* Admin Dashboard */}
         <Route path="/admin/dashboard" element={<Dashboard />} />
 
-        {/* Admin Content Management Routes */}
-        <Route path="/admin/about" element={<Dashboard />} />
-        <Route path="/admin/skills" element={<Dashboard />} />
-        <Route path="/admin/projects" element={<Dashboard />} />
-        <Route path="/admin/certifications" element={<Dashboard />} />
-        <Route path="/admin/contact" element={<Dashboard />} />
-        <Route path="/admin/settings" element={<Dashboard />} />
+        {/* Admin Content Management Pages */}
+        <Route path="/admin/about" element={<AboutEditor />} />
+        <Route path="/admin/skills" element={<SkillsManager />} />
+        <Route path="/admin/projects" element={<ProjectsManager />} />
+        <Route
+          path="/admin/certifications"
+          element={<CertificationsManager />}
+        />
+        <Route path="/admin/contact" element={<ContactAnalytics />} />
 
         {/* 404 Fallback */}
         <Route path="*" element={<Portfolio />} />
