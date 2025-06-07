@@ -150,7 +150,7 @@ const MagneticCursor: React.FC = () => {
 
       {/* Outer ring - lightest for performance */}
       <motion.div
-        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9997] border border-white/20 rounded-full will-change-transform"
+        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9997] border-2 border-white/30 rounded-full will-change-transform"
         variants={ringVariants}
         animate="default"
         transition={{
