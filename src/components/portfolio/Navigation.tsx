@@ -14,6 +14,7 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);
+  const { isDark } = useTheme();
 
   const navItems = [
     { id: "home", label: "Home", href: "#home" },
