@@ -46,13 +46,27 @@ const Portfolio: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900/50 border-t border-gray-800 py-8">
+      <footer
+        className={`border-t py-8 transition-colors duration-500 ${
+          isDark
+            ? "bg-gray-900/50 border-gray-800"
+            : "bg-gray-50/50 border-gray-200"
+        }`}
+      >
         <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-400">
+          <p
+            className={`transition-colors duration-500 ${
+              isDark ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
             © {new Date().getFullYear()} Portfolio Website. Built with React &
             TypeScript.
           </p>
-          <p className="text-sm text-gray-500 mt-2">
+          <p
+            className={`text-sm mt-2 transition-colors duration-500 ${
+              isDark ? "text-gray-500" : "text-gray-500"
+            }`}
+          >
             Designed with ❤️ for showcasing talent and connecting with
             opportunities.
           </p>
