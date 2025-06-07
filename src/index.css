@@ -6,22 +6,85 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Hide default cursor globally */
-* {
-  cursor: none !important;
-}
-
-/* Ensure all interactive elements also hide cursor */
+/* Hide default cursor globally - comprehensive approach */
+*,
+*::before,
+*::after,
+html,
+body,
+div,
+span,
 button,
 a,
 input,
 textarea,
 select,
+option,
+label,
+form,
+fieldset,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video,
 [role="button"],
-[data-magnetic] {
+[data-magnetic],
+[tabindex] {
   cursor: none !important;
 }
 
+/* Force hide cursor on all possible states */
+*:hover,
+*:focus,
+*:active,
+*:visited {
+  cursor: none !important;
+}
+
+/* Ensure root elements hide cursor */
+html {
+  cursor: none !important;
+}
+
+body {
+  cursor: none !important;
+}
+
+/* Override any framework or library cursor styles */
+.cursor-pointer,
+.cursor-default,
+.cursor-auto,
+.cursor-text,
+.cursor-move,
+.cursor-grab,
+.cursor-grabbing {
+  cursor: none !important;
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
