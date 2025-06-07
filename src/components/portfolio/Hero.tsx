@@ -111,7 +111,11 @@ const Hero: React.FC = () => {
             className="text-left space-y-6"
           >
             {/* Hello Text with Word Animations */}
-            <div className="text-gray-400 text-lg md:text-xl font-light">
+            <div
+              className={`text-lg md:text-xl font-light transition-colors duration-500 ${
+                isDark ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
               <motion.span
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
