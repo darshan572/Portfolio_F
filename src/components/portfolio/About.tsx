@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { motion, useInView } from "framer-motion";
-import { MapPin, Calendar, GraduationCap, Code, Award } from "lucide-react";
+import { motion } from "framer-motion";
+import { Calendar, MapPin, GraduationCap, Award } from "lucide-react";
 import PortfolioManager from "@/lib/portfolio-manager";
 import { PersonalInfo, Education } from "@/types/portfolio";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const About: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
