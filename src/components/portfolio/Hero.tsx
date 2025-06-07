@@ -127,9 +127,9 @@ const Hero: React.FC = () => {
 
             {/* Name */}
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
               className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
             >
               {personalInfo?.name || "Darshan Kumar"}
