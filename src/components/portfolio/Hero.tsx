@@ -196,24 +196,6 @@ const Hero: React.FC = () => {
 
       <div className="container mx-auto px-4 text-center relative z-10">
         <div className="max-w-4xl mx-auto">
-          {/* Profile Image */}
-          {personalInfo?.profileImage && (
-            <motion.div
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="mb-8"
-            >
-              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-gradient-to-r from-cyan-400 to-green-400 p-1 bg-gradient-to-r from-cyan-400 to-green-400">
-                <img
-                  src={personalInfo.profileImage}
-                  alt={personalInfo.name}
-                  className="w-full h-full object-cover rounded-full"
-                />
-              </div>
-            </motion.div>
-          )}
-
           {/* Main Heading */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
