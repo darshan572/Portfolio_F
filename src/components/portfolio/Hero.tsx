@@ -87,7 +87,9 @@ const Hero: React.FC = () => {
         {Array.from({ length: 15 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-red-500 rounded-full opacity-60"
+            className={`absolute w-2 h-2 rounded-full opacity-60 transition-colors duration-500 ${
+              isDark ? "bg-red-500" : "bg-blue-500"
+            }`}
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
