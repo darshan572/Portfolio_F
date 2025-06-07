@@ -281,7 +281,11 @@ const Hero: React.FC = () => {
               <motion.button
                 onClick={scrollToProjects}
                 data-magnetic
-                className="group flex items-center gap-2 px-8 py-4 border border-gray-600 text-gray-300 font-semibold rounded-lg hover:border-gray-400 hover:text-white transition-all duration-300 relative overflow-hidden"
+                className={`group flex items-center gap-2 px-8 py-4 border font-semibold rounded-lg transition-all duration-300 relative overflow-hidden ${
+                  isDark
+                    ? "border-gray-600 text-gray-300 hover:border-gray-400 hover:text-white"
+                    : "border-gray-400 text-gray-700 hover:border-gray-600 hover:text-gray-900"
+                }`}
                 whileHover={{
                   scale: 1.05,
                   borderColor: "#ffffff",
