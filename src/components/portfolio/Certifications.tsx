@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Award,
   ExternalLink,
@@ -10,13 +10,12 @@ import {
 import PortfolioManager from "@/lib/portfolio-manager";
 import { Certification } from "@/types/portfolio";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const Certifications: React.FC = () => {
   const [certifications, setCertifications] = useState<Certification[]>([]);
-  const { ref, isInView } = useScrollAnimation({
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px",
-  });
+  const { ref, isVisible } = useScrollAnimation();
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const manager = PortfolioManager.getInstance();
@@ -31,376 +30,372 @@ const Certifications: React.FC = () => {
       window.removeEventListener("portfolioDataUpdated", handleDataUpdate);
   }, []);
 
-  const isExpired = (expiryDate?: string) => {
-    if (!expiryDate) return false;
-    return new Date(expiryDate) < new Date();
+  const getValidationIcon = (isValid: boolean) => {
+    return isValid ? (
+      <CheckCircle className="text-green-500" size={20} />
+    ) : (
+      <Clock
+        className={`${isDark ? "text-yellow-400" : "text-yellow-600"}`}
+        size={20}
+      />
+    );
   };
 
-  const isExpiringSoon = (expiryDate?: string) => {
-    if (!expiryDate) return false;
-    const expiry = new Date(expiryDate);
-    const today = new Date();
-    const timeDiff = expiry.getTime() - today.getTime();
-    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    return daysDiff <= 30 && daysDiff > 0;
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      y: 70,
-      scale: 0.9,
-      rotateX: 30,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      rotateX: 0,
-      transition: {
-        duration: 0.9,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const certCardVariants = {
-    hidden: {
-      opacity: 0,
-      scale: 0.8,
-      y: 50,
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        duration: 0.7,
-        ease: "easeOut",
-      },
-    },
+  const getValidationBadge = (isValid: boolean) => {
+    if (isValid) {
+      return isDark
+        ? "bg-green-500/20 text-green-400 border-green-500/30"
+        : "bg-green-100 text-green-700 border-green-300";
+    }
+    return isDark
+      ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+      : "bg-yellow-100 text-yellow-700 border-yellow-300";
   };
 
   return (
     <section
       id="certifications"
+      className={`min-h-screen py-20 relative overflow-hidden transition-all duration-500 ${
+        isDark
+          ? "bg-gradient-to-br from-black via-gray-900 to-black"
+          : "bg-gradient-to-br from-white via-gray-50 to-gray-100"
+      }`}
       ref={ref}
-      className="py-24 bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden"
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div
-          className={
-            'absolute inset-0 bg-[url(\'data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23fbbf24" fill-opacity="0.3"%3E%3Cpolygon points="30 0 60 30 30 60 0 30"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\')] bg-repeat'
-          }
-        />
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        {/* Award Icons Background */}
+        {Array.from({ length: 15 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className={`absolute transition-colors duration-500 ${
+              isDark ? "text-cyan-400/5" : "text-blue-500/5"
+            }`}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              fontSize: `${40 + Math.random() * 40}px`,
+            }}
+            animate={{
+              rotate: [0, 360],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{
+              duration: 20 + Math.random() * 10,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+            }}
+          >
+            <Award />
+          </motion.div>
+        ))}
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="max-w-7xl mx-auto"
-        >
-          {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="text-white">My </span>
-              <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+        <div className="max-w-6xl mx-auto">
+          {/* Section Title */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2
+              className={`text-4xl md:text-5xl font-bold mb-4 transition-colors duration-500 ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
+            >
+              <span
+                className={`${
+                  isDark
+                    ? "bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent"
+                    : "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                }`}
+              >
                 Certifications
-              </span>
+              </span>{" "}
+              & Achievements
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Professional certifications and achievements that validate my
-              expertise
+            <p
+              className={`text-xl max-w-2xl mx-auto transition-colors duration-500 ${
+                isDark ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
+              Professional certifications and completed courses
             </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-orange-400 mx-auto mt-6" />
           </motion.div>
 
           {/* Certifications Grid */}
-          <motion.div
-            variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {certifications.map((cert, index) => (
-              <motion.div
-                key={cert.id}
-                variants={itemVariants}
-                className="group relative"
-                whileHover={{ y: -5 }}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl overflow-hidden hover:border-yellow-400/50 transition-all duration-300 h-full">
+          {certifications.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {certifications.map((cert, index) => (
+                <motion.div
+                  key={cert.id}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={
+                    isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }
+                  }
+                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  className={`group p-6 rounded-2xl border backdrop-blur-lg transition-all duration-500 hover:scale-105 ${
+                    isDark
+                      ? "bg-gray-800/50 border-gray-700/50 hover:border-cyan-400/50"
+                      : "bg-white/70 border-gray-200/50 shadow-lg hover:border-blue-400/50"
+                  }`}
+                >
+                  {/* Certificate Header */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div
+                      className={`p-3 rounded-xl ${
+                        isDark
+                          ? "bg-gradient-to-r from-cyan-400/20 to-green-400/20"
+                          : "bg-gradient-to-r from-blue-500/20 to-purple-500/20"
+                      }`}
+                    >
+                      <Award
+                        className={`${
+                          isDark ? "text-cyan-400" : "text-blue-600"
+                        }`}
+                        size={24}
+                      />
+                    </div>
+
+                    <div className="text-right">
+                      <div className={`flex items-center gap-2 mb-2`}>
+                        {getValidationIcon(cert.isValid)}
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full border font-medium ${getValidationBadge(cert.isValid)}`}
+                        >
+                          {cert.isValid ? "Verified" : "Pending"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Certificate Image */}
                   {cert.image && (
-                    <div className="relative h-48 overflow-hidden">
+                    <div className="mb-4 overflow-hidden rounded-lg">
                       <img
                         src={cert.image}
-                        alt={cert.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        alt={`${cert.name} certificate`}
+                        className="w-full h-32 object-cover transition-transform duration-500 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
-                      {/* Status Indicator */}
-                      <div className="absolute top-4 right-4">
-                        {isExpired(cert.expiryDate) ? (
-                          <div className="flex items-center space-x-1 px-3 py-1 bg-red-400/20 border border-red-400/30 rounded-full text-red-400 text-xs font-medium">
-                            <Clock size={12} />
-                            <span>Expired</span>
-                          </div>
-                        ) : isExpiringSoon(cert.expiryDate) ? (
-                          <div className="flex items-center space-x-1 px-3 py-1 bg-yellow-400/20 border border-yellow-400/30 rounded-full text-yellow-400 text-xs font-medium">
-                            <Clock size={12} />
-                            <span>Expiring Soon</span>
-                          </div>
-                        ) : (
-                          <div className="flex items-center space-x-1 px-3 py-1 bg-green-400/20 border border-green-400/30 rounded-full text-green-400 text-xs font-medium">
-                            <CheckCircle size={12} />
-                            <span>Valid</span>
-                          </div>
-                        )}
-                      </div>
                     </div>
                   )}
 
-                  {/* Certificate Content */}
-                  <div className="p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Award className="text-black" size={20} />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors leading-tight">
-                            {cert.name}
-                          </h3>
-                          <p className="text-yellow-400 font-medium text-sm">
-                            {cert.issuer}
-                          </p>
-                        </div>
-                      </div>
+                  {/* Certificate Details */}
+                  <div className="space-y-3">
+                    <h3
+                      className={`font-semibold text-lg transition-colors duration-500 ${
+                        isDark ? "text-white" : "text-gray-900"
+                      }`}
+                    >
+                      {cert.name}
+                    </h3>
 
+                    <p
+                      className={`font-medium transition-colors duration-500 ${
+                        isDark ? "text-cyan-400" : "text-blue-600"
+                      }`}
+                    >
+                      {cert.issuer}
+                    </p>
+
+                    <div className="flex items-center gap-2 text-sm">
+                      <Calendar
+                        className={`transition-colors duration-500 ${
+                          isDark ? "text-gray-400" : "text-gray-500"
+                        }`}
+                        size={16}
+                      />
+                      <span
+                        className={`transition-colors duration-500 ${
+                          isDark ? "text-gray-400" : "text-gray-600"
+                        }`}
+                      >
+                        Issued: {new Date(cert.issueDate).toLocaleDateString()}
+                      </span>
+                    </div>
+
+                    {cert.expiryDate && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <Clock
+                          className={`transition-colors duration-500 ${
+                            isDark ? "text-gray-400" : "text-gray-500"
+                          }`}
+                          size={16}
+                        />
+                        <span
+                          className={`transition-colors duration-500 ${
+                            isDark ? "text-gray-400" : "text-gray-600"
+                          }`}
+                        >
+                          Expires:{" "}
+                          {new Date(cert.expiryDate).toLocaleDateString()}
+                        </span>
+                      </div>
+                    )}
+
+                    {cert.credentialId && (
+                      <div
+                        className={`text-xs font-mono p-2 rounded border transition-colors duration-500 ${
+                          isDark
+                            ? "bg-gray-700/50 border-gray-600 text-gray-300"
+                            : "bg-gray-50 border-gray-200 text-gray-600"
+                        }`}
+                      >
+                        ID: {cert.credentialId}
+                      </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3 pt-2">
                       {cert.verificationUrl && (
                         <motion.a
                           href={cert.verificationUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 bg-gray-700/50 rounded-lg text-gray-400 hover:text-white hover:bg-gray-600/50 transition-colors flex-shrink-0"
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                            isDark
+                              ? "bg-cyan-400/20 text-cyan-400 hover:bg-cyan-400/30"
+                              : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                          }`}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                         >
                           <ExternalLink size={16} />
+                          Verify
+                        </motion.a>
+                      )}
+
+                      {cert.certificateUrl && (
+                        <motion.a
+                          href={cert.certificateUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                            isDark
+                              ? "bg-gray-700/50 text-gray-300 hover:bg-gray-600/50"
+                              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          }`}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Award size={16} />
+                          View
                         </motion.a>
                       )}
                     </div>
-
-                    {/* Credential ID */}
-                    {cert.credentialId && (
-                      <div className="mb-4">
-                        <p className="text-xs text-gray-500 mb-1">
-                          Credential ID
-                        </p>
-                        <p className="text-sm text-gray-300 font-mono bg-gray-900/50 px-2 py-1 rounded">
-                          {cert.credentialId}
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Skills */}
-                    {cert.skills.length > 0 && (
-                      <div className="mb-4">
-                        <p className="text-xs text-gray-500 mb-2">
-                          Skills Validated
-                        </p>
-                        <div className="flex flex-wrap gap-1">
-                          {cert.skills.slice(0, 3).map((skill) => (
-                            <span
-                              key={skill}
-                              className="px-2 py-1 bg-yellow-400/20 border border-yellow-400/30 rounded text-yellow-400 text-xs font-medium"
-                            >
-                              {skill}
-                            </span>
-                          ))}
-                          {cert.skills.length > 3 && (
-                            <span className="px-2 py-1 bg-gray-600/20 border border-gray-600/30 rounded text-gray-400 text-xs">
-                              +{cert.skills.length - 3} more
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Dates */}
-                    <div className="flex items-center justify-between text-xs text-gray-500">
-                      <div className="flex items-center space-x-1">
-                        <Calendar size={12} />
-                        <span>
-                          Issued:{" "}
-                          {new Date(cert.issueDate).toLocaleDateString()}
-                        </span>
-                      </div>
-                      {cert.expiryDate && (
-                        <div
-                          className={`flex items-center space-x-1 ${
-                            isExpired(cert.expiryDate)
-                              ? "text-red-400"
-                              : isExpiringSoon(cert.expiryDate)
-                                ? "text-yellow-400"
-                                : "text-gray-500"
-                          }`}
-                        >
-                          <Clock size={12} />
-                          <span>
-                            {isExpired(cert.expiryDate)
-                              ? "Expired: "
-                              : "Expires: "}
-                            {new Date(cert.expiryDate).toLocaleDateString()}
-                          </span>
-                        </div>
-                      )}
-                    </div>
                   </div>
-
-                  {/* Hover Effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-t from-yellow-400/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    initial={false}
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Empty State */}
-          {certifications.length === 0 && (
-            <motion.div variants={itemVariants} className="text-center py-16">
-              <div className="w-24 h-24 mx-auto mb-6 bg-gray-800 rounded-full flex items-center justify-center">
-                <Award className="text-gray-600" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-400 mb-2">
-                No certifications yet
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            /* No Certifications Message */
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
+              className={`text-center py-20 transition-colors duration-500 ${
+                isDark ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
+              <Award size={64} className="mx-auto mb-6 opacity-50" />
+              <h3
+                className={`text-2xl font-semibold mb-4 transition-colors duration-500 ${
+                  isDark ? "text-white" : "text-gray-900"
+                }`}
+              >
+                No Certifications Yet
               </h3>
-              <p className="text-gray-600">
-                Certifications will be displayed here once added
+              <p className="text-lg max-w-md mx-auto">
+                Certifications and achievements will be displayed here once
+                added.
+              </p>
+              <p className="text-sm mt-4 opacity-75">
+                Add certifications through the admin panel to showcase your
+                professional achievements.
               </p>
             </motion.div>
           )}
 
-          {/* Certifications Summary */}
+          {/* Achievement Stats */}
           {certifications.length > 0 && (
             <motion.div
-              variants={itemVariants}
-              className="mt-16 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8"
+              initial={{ opacity: 0, y: 50 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className={`mt-16 p-8 rounded-2xl border backdrop-blur-lg text-center transition-all duration-500 ${
+                isDark
+                  ? "bg-gray-800/30 border-gray-700/30"
+                  : "bg-white/50 border-gray-200/30 shadow-lg"
+              }`}
             >
-              <h3 className="text-2xl font-bold text-white mb-6 text-center">
-                Certifications Overview
+              <h3
+                className={`text-2xl font-semibold mb-8 transition-colors duration-500 ${
+                  isDark ? "text-white" : "text-gray-900"
+                }`}
+              >
+                Achievement Summary
               </h3>
+
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-400 mb-2">
-                    {certifications.length}
-                  </div>
-                  <div className="text-sm text-gray-400">
-                    Total Certificates
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-green-400 mb-2">
-                    {
-                      certifications.filter(
-                        (cert) => !isExpired(cert.expiryDate),
-                      ).length
+                {[
+                  {
+                    label: "Total Certifications",
+                    value: certifications.length,
+                  },
+                  {
+                    label: "Verified",
+                    value: certifications.filter((c) => c.isValid).length,
+                  },
+                  {
+                    label: "This Year",
+                    value: certifications.filter(
+                      (c) =>
+                        new Date(c.issueDate).getFullYear() ===
+                        new Date().getFullYear(),
+                    ).length,
+                  },
+                  {
+                    label: "Active",
+                    value: certifications.filter(
+                      (c) =>
+                        !c.expiryDate || new Date(c.expiryDate) > new Date(),
+                    ).length,
+                  },
+                ].map((stat, index) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={
+                      isVisible
+                        ? { opacity: 1, scale: 1 }
+                        : { opacity: 0, scale: 0.5 }
                     }
-                  </div>
-                  <div className="text-sm text-gray-400">Valid</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-orange-400 mb-2">
-                    {
-                      certifications.filter((cert) =>
-                        isExpiringSoon(cert.expiryDate),
-                      ).length
-                    }
-                  </div>
-                  <div className="text-sm text-gray-400">Expiring Soon</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-400 mb-2">
-                    {
-                      Array.from(
-                        new Set(certifications.flatMap((cert) => cert.skills)),
-                      ).length
-                    }
-                  </div>
-                  <div className="text-sm text-gray-400">Skills Covered</div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Achievement Timeline */}
-          {certifications.length > 0 && (
-            <motion.div variants={itemVariants} className="mt-16">
-              <h3 className="text-2xl font-bold text-white mb-8 text-center">
-                Achievement Timeline
-              </h3>
-              <div className="relative">
-                {/* Timeline Line */}
-                <div className="absolute left-1/2 transform -translate-x-0.5 h-full w-px bg-gradient-to-b from-yellow-400 to-orange-400" />
-
-                {certifications
-                  .sort(
-                    (a, b) =>
-                      new Date(b.issueDate).getTime() -
-                      new Date(a.issueDate).getTime(),
-                  )
-                  .map((cert, index) => (
-                    <motion.div
-                      key={cert.id}
-                      variants={itemVariants}
-                      className={`relative flex items-center mb-8 ${
-                        index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+                    transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
+                    className="space-y-2"
+                  >
+                    <div
+                      className={`text-3xl font-bold transition-colors duration-500 ${
+                        isDark
+                          ? "bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent"
+                          : "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
                       }`}
                     >
-                      {/* Timeline Node */}
-                      <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-yellow-400 rounded-full border-4 border-black z-10" />
-
-                      {/* Content */}
-                      <div
-                        className={`w-5/12 ${index % 2 === 0 ? "text-right pr-8" : "text-left pl-8"}`}
-                      >
-                        <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700/50">
-                          <h4 className="font-semibold text-white">
-                            {cert.name}
-                          </h4>
-                          <p className="text-yellow-400 text-sm">
-                            {cert.issuer}
-                          </p>
-                          <p className="text-gray-400 text-xs mt-1">
-                            {new Date(cert.issueDate).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
+                      {stat.value}
+                    </div>
+                    <div
+                      className={`text-sm transition-colors duration-500 ${
+                        isDark ? "text-gray-400" : "text-gray-600"
+                      }`}
+                    >
+                      {stat.label}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           )}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
