@@ -189,7 +189,11 @@ const Hero: React.FC = () => {
               transition={{ duration: 0.6, delay: 1.4 }}
               className="max-w-lg"
             >
-              <p className="text-gray-400 text-base md:text-lg leading-relaxed">
+              <p
+                className={`text-base md:text-lg leading-relaxed transition-colors duration-500 ${
+                  isDark ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
                 {personalInfo?.introduction ||
                   `I'm a 3rd year Computer Science and Engineering student at Quantum University, New Delhi.`}
               </p>
