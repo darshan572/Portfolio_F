@@ -112,9 +112,9 @@ const MagneticCursor: React.FC = () => {
 
   return (
     <>
-      {/* Main cursor - optimized */}
+      {/* Main cursor - works alongside default cursor */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] mix-blend-difference will-change-transform"
+        className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] will-change-transform"
         variants={variants}
         animate={cursorVariant}
         transition={{
@@ -127,7 +127,7 @@ const MagneticCursor: React.FC = () => {
           transform: `translate3d(${mousePosition.x - 16}px, ${mousePosition.y - 16}px, 0)`,
         }}
       >
-        <div className="w-full h-full bg-white rounded-full"></div>
+        <div className="w-full h-full bg-white/80 rounded-full border-2 border-white/40 backdrop-blur-sm"></div>
       </motion.div>
 
       {/* Trail cursor - simplified for performance */}
