@@ -152,11 +152,12 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
                 className={cn(
                   "relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 group",
                   activeSection === item.id
-                    ? isDark ? "text-white" : "text-gray-900"
+                    ? isDark
+                      ? "text-white"
+                      : "text-gray-900"
                     : isDark
                       ? "text-gray-400 hover:text-white"
-                      : "text-gray-600 hover:text-gray-900"
-                )}
+                      : "text-gray-600 hover:text-gray-900",
                 )}
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -170,21 +171,27 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
                 {activeSection === item.id && (
                   <motion.div
                     layoutId="activeSection"
-                    className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-pink-500/20 rounded-lg border border-red-500/30"
+                    className={`absolute inset-0 rounded-lg border ${
+                      isDark
+                        ? "bg-gradient-to-r from-red-500/20 to-pink-500/20 border-red-500/30"
+                        : "bg-gradient-to-r from-red-500/10 to-pink-500/10 border-red-500/20"
+                    }`}
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
 
                 {/* Hover effect */}
                 <motion.div
-                  className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100"
+                  className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 ${
+                    isDark ? "bg-white/5" : "bg-black/5"
+                  }`}
                   transition={{ duration: 0.2 }}
                 />
               </motion.button>
             ))}
           </motion.div>
 
-          {/* Admin Button & Mobile Menu */}
+          {/* Theme Toggle & Admin Button & Mobile Menu */}
           <motion.div
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -216,7 +223,11 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
               data-magnetic
-              className="lg:hidden p-2 rounded-lg bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all duration-300"
+              className={`lg:hidden p-2 rounded-lg transition-all duration-300 ${
+                isDark
+                  ? "bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-700/50"
+                  : "bg-gray-100/50 text-gray-600 hover:text-gray-900 hover:bg-gray-200/50"
+              }`}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
@@ -268,7 +279,11 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-lg border-b border-gray-800/50 lg:hidden"
+              className={`absolute top-full left-0 right-0 backdrop-blur-lg border-b lg:hidden ${
+                isDark
+                  ? "bg-black/95 border-gray-800/50"
+                  : "bg-white/95 border-gray-200/50"
+              }`}
             >
               <div className="container mx-auto px-4 py-6">
                 <div className="space-y-4">
@@ -279,8 +294,12 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
                       className={cn(
                         "w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 group",
                         activeSection === item.id
-                          ? "text-white bg-gradient-to-r from-red-500/20 to-pink-500/20 border border-red-500/30"
-                          : "text-gray-400 hover:text-white hover:bg-gray-800/50",
+                          ? isDark
+                            ? "text-white bg-gradient-to-r from-red-500/20 to-pink-500/20 border border-red-500/30"
+                            : "text-gray-900 bg-gradient-to-r from-red-500/10 to-pink-500/10 border border-red-500/20"
+                          : isDark
+                            ? "text-gray-400 hover:text-white hover:bg-gray-800/50"
+                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-100/50",
                       )}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
