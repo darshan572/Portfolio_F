@@ -6,11 +6,15 @@ import Skills from "@/components/portfolio/Skills";
 import Projects from "@/components/portfolio/Projects";
 import Certifications from "@/components/portfolio/Certifications";
 import Contact from "@/components/portfolio/Contact";
+import { checkAndResetData } from "@/lib/reset-data";
 
 const Portfolio: React.FC = () => {
   useEffect(() => {
     // Set page title
-    document.title = "Portfolio - Professional Portfolio Website";
+    document.title = "Darshan Kumar - Portfolio | B.Tech CSE Student";
+
+    // Check and reset data if needed
+    checkAndResetData();
 
     // Smooth scrolling behavior
     document.documentElement.style.scrollBehavior = "smooth";
