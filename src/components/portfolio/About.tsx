@@ -9,7 +9,8 @@ import { useTheme } from "@/contexts/ThemeContext";
 const About: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
   const [education, setEducation] = useState<Education[]>([]);
-  const { ref, isInView } = useScrollAnimation({
+  const { ref, isVisible } = useScrollAnimation();
+  const { isDark } = useTheme();
     threshold: 0.1,
     rootMargin: "0px 0px -50px 0px",
   });
