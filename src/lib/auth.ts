@@ -49,20 +49,24 @@ class AuthManager {
       if (!savedUser) {
         // If no admin user exists, create one with the provided credentials
         this.initializeAdmin(username, password);
-        return this.login(username, password);
+        // Directly authenticate after creating user instead of recursive call
+        const authState: AuthState = {
+          isAuthenticated: true,
+          lastLogin: new Date().toISOString(),
+          sessionTimeout: this.SESSION_TIMEOUT
+        };
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(authState));
+        return true;
       }
 
       const adminUser: AdminUser = JSON.parse(savedUser);
       const passwordHash = this.hashPassword(password);
 
-      if (
-        adminUser.username === username &&
-        adminUser.passwordHash === passwordHash
-      ) {
+      if (adminUser.username === username && adminUser.passwordHash === passwordHash) {
         const authState: AuthState = {
           isAuthenticated: true,
           lastLogin: new Date().toISOString(),
-          sessionTimeout: this.SESSION_TIMEOUT,
+          sessionTimeout: this.SESSION_TIMEOUT
         };
 
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(authState));
@@ -75,9 +79,10 @@ class AuthManager {
       }
       return false;
     } catch (error) {
-      console.error("Login error:", error);
+      console.error('Login error:', error);
       return false;
     }
+  }
   }
 
   // Check if user is authenticated
