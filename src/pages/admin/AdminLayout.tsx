@@ -9,6 +9,7 @@ import {
   Home,
   Settings,
   ChevronDown,
+  BookOpen,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AuthManager from "@/lib/auth";
@@ -74,6 +75,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { href: "/admin/skills", label: "Skills", icon: Settings },
     { href: "/admin/projects", label: "Projects", icon: Settings },
     { href: "/admin/certifications", label: "Certifications", icon: Settings },
+    { href: "/admin/education", label: "Education", icon: BookOpen },
     { href: "/admin/contact", label: "Contact", icon: Settings },
   ];
 
@@ -217,80 +219,81 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       </AnimatePresence>
 
       {/* Mobile Sidebar */}
-      <motion.aside
-        initial={{ x: "-100%" }}
-        animate={{ x: sidebarOpen ? 0 : "-100%" }}
-        className="fixed left-0 top-0 h-full w-80 bg-gray-800/90 backdrop-blur-lg border-r border-gray-700/50 z-50 lg:hidden"
-      >
-        <div className="p-6 h-full flex flex-col">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-lg flex items-center justify-center">
-                <Settings className="text-black" size={20} />
+      <AnimatePresence>
+        {sidebarOpen && (
+          <motion.aside
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed left-0 top-0 h-full w-80 bg-gray-800/90 backdrop-blur-lg border-r border-gray-700/50 z-50 lg:hidden"
+          >
+            <div className="p-6 h-full flex flex-col">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-lg flex items-center justify-center">
+                    <Settings className="text-black" size={20} />
+                  </div>
+                  <div>
+                    <h1 className="text-lg font-bold">Admin Panel</h1>
+                    <p className="text-xs text-gray-400">Content Manager</p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-2 rounded-lg bg-gray-700/50 text-gray-400 hover:text-white transition-colors"
+                >
+                  <X size={20} />
+                </button>
               </div>
-              <div>
-                <h1 className="text-lg font-bold">Admin Panel</h1>
-                <p className="text-xs text-gray-400">Content Manager</p>
+
+              {/* Navigation */}
+              <nav className="flex-1 space-y-2">
+                {navigationItems.map((item) => (
+                  <motion.button
+                    key={item.href}
+                    onClick={() => {
+                      navigate(item.href);
+                      setSidebarOpen(false);
+                    }}
+                    className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all duration-200 text-left"
+                    whileHover={{ x: 5 }}
+                  >
+                    <item.icon size={20} />
+                    <span>{item.label}</span>
+                  </motion.button>
+                ))}
+              </nav>
+
+              {/* User Info */}
+              <div className="mt-auto">
+                {/* Session Timer */}
+                <div className="mb-4 p-3 bg-blue-400/10 border border-blue-400/20 rounded-lg">
+                  <div className="flex items-center space-x-2 text-blue-400 text-sm">
+                    <Clock size={16} />
+                    <span>Session</span>
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1">{sessionTime}</p>
+                </div>
+
+                {/* User Menu */}
+                <div className="relative">
+                  <motion.button
+                    onClick={handleLogout}
+                    className="w-full flex items-center space-x-2 p-3 bg-red-600/20 rounded-lg text-red-400 hover:bg-red-600/30 transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <LogOut size={16} />
+                    <span>Logout</span>
+                  </motion.button>
+                </div>
               </div>
             </div>
-
-            <button
-              onClick={() => setSidebarOpen(false)}
-              className="p-2 rounded-lg bg-gray-700/50 text-gray-400 hover:text-white transition-colors"
-            >
-              <X size={20} />
-            </button>
-          </div>
-
-          {/* Navigation */}
-          <nav className="flex-1 space-y-2">
-            {navigationItems.map((item) => (
-              <motion.button
-                key={item.href}
-                onClick={() => {
-                  navigate(item.href);
-                  setSidebarOpen(false);
-                }}
-                className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all duration-200 text-left"
-                whileHover={{ x: 5 }}
-            {[
-              { href: '/admin/dashboard', label: 'Dashboard', icon: Home },
-              { href: '/admin/about', label: 'About Section', icon: User },
-              { href: '/admin/skills', label: 'Skills', icon: Settings },
-              { href: '/admin/projects', label: 'Projects', icon: Settings },
-              { href: '/admin/certifications', label: 'Certifications', icon: Settings },
-              { href: '/admin/education', label: 'Education', icon: Settings },
-              { href: '/admin/contact', label: 'Contact', icon: Settings },
-            ].map((item) => (
-              <motion.button
-            ))}
-          </nav>
-
-          {/* User Info */}
-          <div className="mt-auto">
-            {/* Session Timer */}
-            <div className="mb-4 p-3 bg-blue-400/10 border border-blue-400/20 rounded-lg">
-              <div className="flex items-center space-x-2 text-blue-400 text-sm">
-                <Clock size={16} />
-                <span>Session</span>
-              </div>
-              <p className="text-xs text-gray-400 mt-1">{sessionTime}</p>
-            </div>
-
-            {/* User Menu */}
-            <div className="relative">
-              <motion.button
-                onClick={handleLogout}
-                className="w-full flex items-center space-x-2 p-3 bg-red-600/20 rounded-lg text-red-400 hover:bg-red-600/30 transition-colors"
-              >
-                <LogOut size={16} />
-                <span>Logout</span>
-              </motion.button>
-            </div>
-          </div>
-        </div>
-      </motion.aside>
+          </motion.aside>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
