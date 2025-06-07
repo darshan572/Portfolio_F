@@ -1,33 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { motion, useInView } from "framer-motion";
-import {
-  Code,
-  Database,
-  Wrench,
-  Monitor,
-  Server,
-  Smartphone,
-} from "lucide-react";
+import { motion } from "framer-motion";
+import { Code, Database, Globe, Smartphone, Server, Cpu } from "lucide-react";
 import PortfolioManager from "@/lib/portfolio-manager";
 import { Skill } from "@/types/portfolio";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const Skills: React.FC = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
-  const [activeCategory, setActiveCategory] = useState<string>("all");
-  const { ref, isInView } = useScrollAnimation({
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px",
-  });
-
-  const categories = [
-    { id: "all", label: "All Skills", icon: Monitor },
-    { id: "programming", label: "Programming", icon: Code },
-    { id: "framework", label: "Frameworks", icon: Server },
-    { id: "tool", label: "Tools", icon: Wrench },
-    { id: "database", label: "Databases", icon: Database },
-    { id: "other", label: "Other", icon: Smartphone },
-  ];
+  const { ref, isVisible } = useScrollAnimation();
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const manager = PortfolioManager.getInstance();
@@ -42,278 +24,313 @@ const Skills: React.FC = () => {
       window.removeEventListener("portfolioDataUpdated", handleDataUpdate);
   }, []);
 
-  const filteredSkills =
-    activeCategory === "all"
-      ? skills
-      : skills.filter((skill) => skill.category === activeCategory);
-
-  const getSkillColor = (category: string) => {
-    const colors = {
-      programming: "from-blue-400 to-purple-400",
-      framework: "from-green-400 to-cyan-400",
-      tool: "from-orange-400 to-red-400",
-      database: "from-yellow-400 to-orange-400",
-      other: "from-purple-400 to-pink-400",
+  const getSkillIcon = (category: string) => {
+    const iconMap = {
+      Frontend: Globe,
+      Backend: Server,
+      Database: Database,
+      Mobile: Smartphone,
+      DevOps: Cpu,
+      Programming: Code,
     };
-    return (
-      colors[category as keyof typeof colors] || "from-gray-400 to-gray-600"
-    );
+    return iconMap[category as keyof typeof iconMap] || Code;
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3,
-      },
-    },
+  const getSkillColor = (level: number) => {
+    if (isDark) {
+      if (level >= 80) return "from-green-400 to-emerald-500";
+      if (level >= 60) return "from-blue-400 to-cyan-500";
+      if (level >= 40) return "from-yellow-400 to-orange-500";
+      return "from-red-400 to-pink-500";
+    } else {
+      if (level >= 80) return "from-green-500 to-emerald-600";
+      if (level >= 60) return "from-blue-500 to-cyan-600";
+      if (level >= 40) return "from-yellow-500 to-orange-600";
+      return "from-red-500 to-pink-600";
+    }
   };
 
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      y: 60,
-      scale: 0.9,
-      rotateX: 45,
+  const groupedSkills = skills.reduce(
+    (acc, skill) => {
+      if (!acc[skill.category]) {
+        acc[skill.category] = [];
+      }
+      acc[skill.category].push(skill);
+      return acc;
     },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      rotateX: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const skillCardVariants = {
-    hidden: {
-      opacity: 0,
-      x: -50,
-      scale: 0.8,
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      scale: 1,
-      transition: {
-        duration: 0.7,
-        ease: "easeOut",
-      },
-    },
-  };
+    {} as Record<string, Skill[]>,
+  );
 
   return (
     <section
       id="skills"
+      className={`min-h-screen py-20 relative overflow-hidden transition-all duration-500 ${
+        isDark
+          ? "bg-gradient-to-br from-black via-gray-900 to-black"
+          : "bg-gradient-to-br from-white via-gray-50 to-gray-100"
+      }`}
       ref={ref}
-      className="py-24 bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden"
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div
-          className={
-            'absolute inset-0 bg-[url(\'data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%2300d4ff" fill-opacity="0.3"%3E%3Cpath d="M20 20c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zm10-10c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10z"/%3E%3C/g%3E%3C/svg%3E\')] bg-repeat'
-          }
-        />
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        {/* Floating Code Symbols */}
+        {Array.from({ length: 20 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className={`absolute text-6xl font-mono opacity-5 select-none transition-colors duration-500 ${
+              isDark ? "text-cyan-400" : "text-blue-500"
+            }`}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -20, 0],
+              rotate: [0, 5, -5, 0],
+            }}
+            transition={{
+              duration: 10 + Math.random() * 10,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+            }}
+          >
+            {
+              ["</>", "{}", "[]", "()", "&&", "||", "!=", "==="][
+                Math.floor(Math.random() * 8)
+              ]
+            }
+          </motion.div>
+        ))}
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="max-w-7xl mx-auto"
-        >
-          {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="text-white">My </span>
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+        <div className="max-w-6xl mx-auto">
+          {/* Section Title */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2
+              className={`text-4xl md:text-5xl font-bold mb-4 transition-colors duration-500 ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
+            >
+              Technical{" "}
+              <span
+                className={`${
+                  isDark
+                    ? "bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent"
+                    : "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                }`}
+              >
                 Skills
               </span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Technologies and tools I use to bring ideas to life
+            <p
+              className={`text-xl max-w-2xl mx-auto transition-colors duration-500 ${
+                isDark ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
+              Technologies and tools I work with
             </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 mx-auto mt-6" />
-          </motion.div>
-
-          {/* Category Filter */}
-          <motion.div variants={itemVariants} className="mb-12">
-            <div className="flex flex-wrap justify-center gap-2 md:gap-4">
-              {categories.map((category) => (
-                <motion.button
-                  key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-full border transition-all duration-300 ${
-                    activeCategory === category.id
-                      ? "bg-gradient-to-r from-cyan-400 to-blue-400 text-black border-transparent"
-                      : "text-gray-400 border-gray-600 hover:text-white hover:border-cyan-400"
-                  }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <category.icon size={16} />
-                  <span className="text-sm font-medium">{category.label}</span>
-                </motion.button>
-              ))}
-            </div>
           </motion.div>
 
           {/* Skills Grid */}
-          <motion.div
-            variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {filteredSkills.map((skill, index) => (
-              <motion.div
-                key={skill.id}
-                variants={itemVariants}
-                layout
-                className="group relative"
-                whileHover={{ scale: 1.02 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 hover:border-cyan-400/50 transition-all duration-300 h-full">
-                  {/* Skill Header */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      {skill.icon && (
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-gray-700 to-gray-600 flex items-center justify-center">
-                          <img
-                            src={skill.icon}
-                            alt={skill.name}
-                            className="w-6 h-6"
-                          />
-                        </div>
-                      )}
-                      <div>
-                        <h3 className="text-lg font-semibold text-white group-hover:text-cyan-400 transition-colors">
-                          {skill.name}
-                        </h3>
-                        <p className="text-sm text-gray-400 capitalize">
-                          {skill.category}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-cyan-400">
-                        {skill.level}%
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Progress Bar */}
-                  <div className="relative">
-                    <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-                      <motion.div
-                        className={`h-full bg-gradient-to-r ${getSkillColor(skill.category)} rounded-full relative`}
-                        initial={{ width: 0 }}
-                        animate={
-                          isInView ? { width: `${skill.level}%` } : { width: 0 }
-                        }
-                        transition={{
-                          duration: 1.5,
-                          delay: index * 0.1 + 0.5,
-                          ease: "easeOut",
-                        }}
-                      >
-                        {/* Shimmer Effect */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
-                      </motion.div>
-                    </div>
-
-                    {/* Skill Level Indicator */}
-                    <div className="mt-2 text-xs text-gray-500">
-                      {skill.level >= 90
-                        ? "Expert"
-                        : skill.level >= 70
-                          ? "Advanced"
-                          : skill.level >= 50
-                            ? "Intermediate"
-                            : "Beginner"}
-                    </div>
-                  </div>
-
-                  {/* Hover Effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    initial={false}
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Skills Summary */}
-          <motion.div
-            variants={itemVariants}
-            className="mt-16 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8"
-          >
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">
-              Skills Overview
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {categories.slice(1).map((category) => {
-                const categorySkills = skills.filter(
-                  (skill) => skill.category === category.id,
-                );
-                const avgLevel =
-                  categorySkills.length > 0
-                    ? Math.round(
-                        categorySkills.reduce(
-                          (sum, skill) => sum + skill.level,
-                          0,
-                        ) / categorySkills.length,
-                      )
-                    : 0;
-
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {Object.entries(groupedSkills).map(
+              ([category, categorySkills], categoryIndex) => {
+                const IconComponent = getSkillIcon(category);
                 return (
                   <motion.div
-                    key={category.id}
-                    variants={itemVariants}
-                    className="text-center"
+                    key={category}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={
+                      isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }
+                    }
+                    transition={{ duration: 0.8, delay: categoryIndex * 0.1 }}
+                    className={`p-8 rounded-2xl border backdrop-blur-lg transition-all duration-500 hover:scale-105 ${
+                      isDark
+                        ? "bg-gray-800/50 border-gray-700/50 hover:border-cyan-400/50"
+                        : "bg-white/70 border-gray-200/50 shadow-lg hover:border-blue-400/50"
+                    }`}
                   >
-                    <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-r from-gray-700 to-gray-600 rounded-full flex items-center justify-center">
-                      <category.icon className="text-cyan-400" size={24} />
+                    {/* Category Header */}
+                    <div className="flex items-center gap-3 mb-6">
+                      <div
+                        className={`p-3 rounded-xl ${
+                          isDark
+                            ? "bg-gradient-to-r from-cyan-400/20 to-green-400/20"
+                            : "bg-gradient-to-r from-blue-500/20 to-purple-500/20"
+                        }`}
+                      >
+                        <IconComponent
+                          className={`${
+                            isDark ? "text-cyan-400" : "text-blue-600"
+                          }`}
+                          size={24}
+                        />
+                      </div>
+                      <h3
+                        className={`text-xl font-semibold transition-colors duration-500 ${
+                          isDark ? "text-white" : "text-gray-900"
+                        }`}
+                      >
+                        {category}
+                      </h3>
                     </div>
-                    <div className="text-lg font-semibold text-white">
-                      {categorySkills.length}
-                    </div>
-                    <div className="text-sm text-gray-400 mb-2">
-                      {category.label}
-                    </div>
-                    <div className="text-xs text-cyan-400">
-                      Avg: {avgLevel}%
+
+                    {/* Skills List */}
+                    <div className="space-y-4">
+                      {categorySkills.map((skill, skillIndex) => (
+                        <motion.div
+                          key={skill.name}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={
+                            isVisible
+                              ? { opacity: 1, x: 0 }
+                              : { opacity: 0, x: -20 }
+                          }
+                          transition={{
+                            duration: 0.6,
+                            delay: categoryIndex * 0.1 + skillIndex * 0.05,
+                          }}
+                          className="space-y-2"
+                        >
+                          <div className="flex justify-between items-center">
+                            <span
+                              className={`font-medium transition-colors duration-500 ${
+                                isDark ? "text-white" : "text-gray-900"
+                              }`}
+                            >
+                              {skill.name}
+                            </span>
+                            <span
+                              className={`text-sm px-2 py-1 rounded-full ${
+                                isDark
+                                  ? "bg-gray-700/50 text-gray-300"
+                                  : "bg-gray-100 text-gray-600"
+                              }`}
+                            >
+                              {skill.level}%
+                            </span>
+                          </div>
+
+                          {/* Progress Bar */}
+                          <div
+                            className={`h-2 rounded-full overflow-hidden ${
+                              isDark ? "bg-gray-700/50" : "bg-gray-200"
+                            }`}
+                          >
+                            <motion.div
+                              className={`h-full bg-gradient-to-r ${getSkillColor(skill.level)} rounded-full`}
+                              initial={{ width: 0 }}
+                              animate={
+                                isVisible
+                                  ? { width: `${skill.level}%` }
+                                  : { width: 0 }
+                              }
+                              transition={{
+                                duration: 1.5,
+                                delay: categoryIndex * 0.1 + skillIndex * 0.1,
+                                ease: "easeOut",
+                              }}
+                            />
+                          </div>
+                        </motion.div>
+                      ))}
                     </div>
                   </motion.div>
                 );
-              })}
+              },
+            )}
+          </div>
+
+          {/* Additional Skills Summary */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className={`mt-16 p-8 rounded-2xl border backdrop-blur-lg text-center transition-all duration-500 ${
+              isDark
+                ? "bg-gray-800/30 border-gray-700/30"
+                : "bg-white/50 border-gray-200/30 shadow-lg"
+            }`}
+          >
+            <h3
+              className={`text-2xl font-semibold mb-4 transition-colors duration-500 ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
+            >
+              Always Learning
+            </h3>
+            <p
+              className={`text-lg max-w-3xl mx-auto transition-colors duration-500 ${
+                isDark ? "text-gray-300" : "text-gray-700"
+              }`}
+            >
+              Technology evolves rapidly, and I'm committed to continuous
+              learning. I regularly explore new frameworks, tools, and best
+              practices to stay current with industry trends and deliver
+              innovative solutions.
+            </p>
+
+            {/* Skill Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
+              {[
+                {
+                  label: "Languages",
+                  count: skills.filter((s) => s.category === "Programming")
+                    .length,
+                },
+                {
+                  label: "Frameworks",
+                  count: skills.filter(
+                    (s) =>
+                      s.category === "Frontend" || s.category === "Backend",
+                  ).length,
+                },
+                {
+                  label: "Tools",
+                  count: skills.filter(
+                    (s) => s.category === "DevOps" || s.category === "Database",
+                  ).length,
+                },
+                { label: "Years Experience", count: "2+" },
+              ].map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={
+                    isVisible
+                      ? { opacity: 1, scale: 1 }
+                      : { opacity: 0, scale: 0.5 }
+                  }
+                  transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
+                  className="space-y-2"
+                >
+                  <div
+                    className={`text-3xl font-bold transition-colors duration-500 ${
+                      isDark
+                        ? "bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent"
+                        : "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                    }`}
+                  >
+                    {stat.count}
+                  </div>
+                  <div
+                    className={`text-sm transition-colors duration-500 ${
+                      isDark ? "text-gray-400" : "text-gray-600"
+                    }`}
+                  >
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
-
-          {/* Empty State */}
-          {filteredSkills.length === 0 && (
-            <motion.div variants={itemVariants} className="text-center py-16">
-              <div className="w-24 h-24 mx-auto mb-6 bg-gray-800 rounded-full flex items-center justify-center">
-                <Code className="text-gray-600" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-400 mb-2">
-                No skills found
-              </h3>
-              <p className="text-gray-600">
-                Try selecting a different category
-              </p>
-            </motion.div>
-          )}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
