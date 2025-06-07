@@ -8,7 +8,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 const Skills: React.FC = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
-  const { ref, isVisible } = useScrollAnimation();
+  const { ref, isInView: isVisible } = useScrollAnimation();
   const { isDark } = useTheme();
 
   useEffect(() => {
