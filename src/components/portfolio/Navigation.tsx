@@ -180,7 +180,8 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.6 }}
-            <div className="flex items-center space-x-4">
+            className="flex items-center space-x-4"
+          >
             {/* Theme Toggle */}
             <motion.div
               initial={{ x: 50, opacity: 0 }}
