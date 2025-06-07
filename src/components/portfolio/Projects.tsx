@@ -12,7 +12,7 @@ const Projects: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const { ref, isVisible } = useScrollAnimation();
+  const { ref, isInView: isVisible } = useScrollAnimation();
   const { isDark } = useTheme();
 
   useEffect(() => {
