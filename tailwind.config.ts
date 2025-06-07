@@ -62,6 +62,20 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Engineering theme colors
+        engineering: {
+          cyan: "#00d4ff",
+          green: "#00ff88",
+          orange: "#ff6b35",
+          purple: "#8b5cf6",
+          yellow: "#fbbf24",
+          "bg-primary": "#0a0a0a",
+          "bg-secondary": "#1a1a1a",
+          "bg-tertiary": "#2a2a2a",
+          "text-primary": "#ffffff",
+          "text-secondary": "#a0a0a0",
+          "text-muted": "#666666",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -85,10 +99,58 @@ export default {
             height: "0",
           },
         },
+        // Engineering theme animations
+        "glow-pulse": {
+          "0%, 100%": { boxShadow: "0 0 5px #00d4ff" },
+          "50%": { boxShadow: "0 0 25px #00d4ff, 0 0 35px #00d4ff" },
+        },
+        "circuit-flow": {
+          "0%": { backgroundPosition: "0 0" },
+          "100%": { backgroundPosition: "50px 50px" },
+        },
+        typewriter: {
+          from: { width: "0" },
+          to: { width: "100%" },
+        },
+        "blink-cursor": {
+          "from, to": { borderColor: "transparent" },
+          "50%": { borderColor: "#00d4ff" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-20px)" },
+        },
+        glitch: {
+          "0%": { transform: "translateX(0)" },
+          "20%": { transform: "translateX(-2px)" },
+          "40%": { transform: "translateX(2px)" },
+          "60%": { transform: "translateX(-2px)" },
+          "80%": { transform: "translateX(2px)" },
+          "100%": { transform: "translateX(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        // Engineering theme animations
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+        "circuit-flow": "circuit-flow 20s linear infinite",
+        typewriter:
+          "typewriter 3s steps(40, end), blink-cursor 0.75s step-end infinite",
+        float: "float 6s ease-in-out infinite",
+        glitch: "glitch 0.3s linear infinite",
+      },
+      fontFamily: {
+        mono: [
+          "JetBrains Mono",
+          "Fira Code",
+          "Monaco",
+          "Consolas",
+          "monospace",
+        ],
+      },
+      backdropBlur: {
+        xs: "2px",
       },
     },
   },
