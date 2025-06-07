@@ -290,7 +290,7 @@ const ContactAnalytics: React.FC = () => {
                 Your Contact Information
               </h3>
               <button
-                onClick={() => window.open("/admin/about", "_blank")}
+                onClick={() => (window.location.href = "/admin/about")}
                 className="text-blue-400 hover:text-blue-300 text-sm flex items-center space-x-1"
               >
                 <span>Edit</span>
