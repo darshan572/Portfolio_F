@@ -145,7 +145,7 @@ const MagneticCursor: React.FC = () => {
           transform: `translate3d(${mousePosition.x - 8}px, ${mousePosition.y - 8}px, 0)`,
         }}
       >
-        <div className="w-full h-full bg-red-500 rounded-full opacity-60"></div>
+        <div className="w-full h-full bg-red-500 rounded-full opacity-70 shadow-lg shadow-red-500/30"></div>
       </motion.div>
 
       {/* Outer ring - lightest for performance */}
