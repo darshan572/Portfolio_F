@@ -114,7 +114,7 @@ const MagneticCursor: React.FC = () => {
 
   return (
     <>
-      {/* Main cursor - works alongside default cursor */}
+      {/* Main cursor - theme aware */}
       <motion.div
         className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] will-change-transform"
         variants={variants}
@@ -129,10 +129,16 @@ const MagneticCursor: React.FC = () => {
           transform: `translate3d(${mousePosition.x - 16}px, ${mousePosition.y - 16}px, 0)`,
         }}
       >
-        <div className="w-full h-full bg-white/80 rounded-full border-2 border-white/40 backdrop-blur-sm"></div>
+        <div
+          className={`w-full h-full rounded-full border-2 backdrop-blur-sm transition-colors duration-300 ${
+            isDark
+              ? "bg-white/80 border-white/40"
+              : "bg-black/80 border-black/40"
+          }`}
+        ></div>
       </motion.div>
 
-      {/* Trail cursor - simplified for performance */}
+      {/* Trail cursor - theme aware */}
       <motion.div
         className="fixed top-0 left-0 w-4 h-4 pointer-events-none z-[9998] will-change-transform"
         variants={trailVariants}
@@ -147,12 +153,20 @@ const MagneticCursor: React.FC = () => {
           transform: `translate3d(${mousePosition.x - 8}px, ${mousePosition.y - 8}px, 0)`,
         }}
       >
-        <div className="w-full h-full bg-red-500 rounded-full opacity-70 shadow-lg shadow-red-500/30"></div>
+        <div
+          className={`w-full h-full rounded-full opacity-70 shadow-lg transition-colors duration-300 ${
+            isDark
+              ? "bg-red-500 shadow-red-500/30"
+              : "bg-blue-500 shadow-blue-500/30"
+          }`}
+        ></div>
       </motion.div>
 
-      {/* Outer ring - lightest for performance */}
+      {/* Outer ring - theme aware */}
       <motion.div
-        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9997] border-2 border-white/30 rounded-full will-change-transform"
+        className={`fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9997] border-2 rounded-full will-change-transform transition-colors duration-300 ${
+          isDark ? "border-white/30" : "border-black/30"
+        }`}
         variants={ringVariants}
         animate="default"
         transition={{
