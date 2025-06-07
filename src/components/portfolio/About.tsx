@@ -3,12 +3,15 @@ import { motion, useInView } from "framer-motion";
 import { MapPin, Calendar, GraduationCap, Code, Award } from "lucide-react";
 import PortfolioManager from "@/lib/portfolio-manager";
 import { PersonalInfo, Education } from "@/types/portfolio";
+import useScrollAnimation from "@/hooks/use-scroll-animation";
 
 const About: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
   const [education, setEducation] = useState<Education[]>([]);
-  const ref = React.useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { ref, isInView } = useScrollAnimation({
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px",
+  });
 
   useEffect(() => {
     const manager = PortfolioManager.getInstance();
@@ -37,13 +40,34 @@ const About: React.FC = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.3,
+        delayChildren: 0.2,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: {
+      opacity: 0,
+      y: 60,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 1,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
+  const fadeInVariants = {
+    hidden: {
+      opacity: 0,
+      y: 40,
+    },
     visible: {
       opacity: 1,
       y: 0,
