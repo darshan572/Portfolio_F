@@ -7,7 +7,6 @@ import Projects from "@/components/portfolio/Projects";
 import Certifications from "@/components/portfolio/Certifications";
 import Contact from "@/components/portfolio/Contact";
 import ScrollProgress from "@/components/portfolio/ScrollProgress";
-import MagneticCursor from "@/components/ui/MagneticCursor";
 import { checkAndResetData } from "@/lib/reset-data";
 
 const Portfolio: React.FC = () => {
