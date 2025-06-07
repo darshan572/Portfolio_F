@@ -167,7 +167,11 @@ const Hero: React.FC = () => {
               transition={{ duration: 0.6, delay: 1.0 }}
               className="relative"
             >
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-gray-300 mb-4">
+              <h2
+                className={`text-xl md:text-2xl lg:text-3xl font-medium mb-4 transition-colors duration-500 ${
+                  isDark ? "text-gray-300" : "text-gray-700"
+                }`}
+              >
                 {personalInfo?.title || "Full Stack Developer"}
               </h2>
               <motion.div
