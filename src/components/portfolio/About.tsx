@@ -9,7 +9,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 const About: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
   const [education, setEducation] = useState<Education[]>([]);
-  const { ref, isVisible } = useScrollAnimation();
+  const { ref, isInView: isVisible } = useScrollAnimation();
   const { isDark } = useTheme();
 
   useEffect(() => {
