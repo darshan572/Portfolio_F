@@ -91,15 +91,39 @@ const Hero: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="text-left space-y-6"
           >
-            {/* Hello Text */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-gray-400 text-lg md:text-xl font-light"
-            >
-              Hello there, I am
-            </motion.p>
+            {/* Hello Text with Word Animations */}
+            <div className="text-gray-400 text-lg md:text-xl font-light">
+              <motion.span
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="inline-block mr-2"
+              >
+                Hello
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="inline-block mr-3"
+              >
+                there,
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0, y: 50, scale: 0.5 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.6,
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 10,
+                }}
+                className="inline-block"
+              >
+                I am
+              </motion.span>
+            </div>
 
             {/* Name */}
             <motion.h1
