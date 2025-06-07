@@ -8,8 +8,6 @@ import { useTheme } from "@/contexts/ThemeContext";
 const Hero: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
   const [socialLinks, setSocialLinks] = useState<SocialLinks | null>(null);
-  const [showImage, setShowImage] = useState(false);
-  const [showNavbar, setShowNavbar] = useState(false);
   const { isDark } = useTheme();
 
   useEffect(() => {
@@ -22,22 +20,16 @@ const Hero: React.FC = () => {
       setSocialLinks(manager.getSocialLinks());
     };
 
-    // Sequential loading timeline
-    const timer1 = setTimeout(() => setShowImage(true), 2000); // Image after text animations
-    const timer2 = setTimeout(() => setShowNavbar(true), 2800); // Navbar after image
-
-    // Dispatch event for navbar to show
-    const timer3 = setTimeout(() => {
+    // Show navbar after a delay
+    const timer = setTimeout(() => {
       window.dispatchEvent(new CustomEvent("showNavbar"));
-    }, 2800);
+    }, 2000);
 
     window.addEventListener("portfolioDataUpdated", handleDataUpdate);
 
     return () => {
       window.removeEventListener("portfolioDataUpdated", handleDataUpdate);
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
+      clearTimeout(timer);
     };
   }, []);
 
@@ -111,12 +103,7 @@ const Hero: React.FC = () => {
       <div className="container mx-auto px-4 h-screen flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center w-full">
           {/* Left Side - Text Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-left space-y-6"
-          >
+          <div className="text-left space-y-6">
             {/* Hello Text with Word Animations */}
             <div
               className={`text-lg md:text-xl font-light transition-colors duration-500 ${
@@ -320,12 +307,12 @@ const Hero: React.FC = () => {
                 />
               </motion.button>
             </motion.div>
-          </motion.div>
+          </div>
 
-          {/* Right Side - Image with Delayed Animation */}
+          {/* Right Side - Image */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
-            animate={showImage ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="flex justify-center lg:justify-end"
           >
@@ -333,11 +320,7 @@ const Hero: React.FC = () => {
               {personalInfo?.profileImage ? (
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
-                  animate={
-                    showImage
-                      ? { scale: 1, opacity: 1 }
-                      : { scale: 0.8, opacity: 0 }
-                  }
+                  animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.5 }}
                   className="relative"
                 >
@@ -356,41 +339,25 @@ const Hero: React.FC = () => {
                   <motion.div
                     className="absolute -top-4 -left-4 w-8 h-8 border-l-2 border-t-2 border-red-500"
                     initial={{ opacity: 0, scale: 0 }}
-                    animate={
-                      showImage
-                        ? { opacity: 1, scale: 1 }
-                        : { opacity: 0, scale: 0 }
-                    }
+                    animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.8 }}
                   />
                   <motion.div
                     className="absolute -top-4 -right-4 w-8 h-8 border-r-2 border-t-2 border-red-500"
                     initial={{ opacity: 0, scale: 0 }}
-                    animate={
-                      showImage
-                        ? { opacity: 1, scale: 1 }
-                        : { opacity: 0, scale: 0 }
-                    }
+                    animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.9 }}
                   />
                   <motion.div
                     className="absolute -bottom-4 -left-4 w-8 h-8 border-l-2 border-b-2 border-red-500"
                     initial={{ opacity: 0, scale: 0 }}
-                    animate={
-                      showImage
-                        ? { opacity: 1, scale: 1 }
-                        : { opacity: 0, scale: 0 }
-                    }
+                    animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 1.0 }}
                   />
                   <motion.div
                     className="absolute -bottom-4 -right-4 w-8 h-8 border-r-2 border-b-2 border-red-500"
                     initial={{ opacity: 0, scale: 0 }}
-                    animate={
-                      showImage
-                        ? { opacity: 1, scale: 1 }
-                        : { opacity: 0, scale: 0 }
-                    }
+                    animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 1.1 }}
                   />
                 </motion.div>
@@ -398,19 +365,23 @@ const Hero: React.FC = () => {
                 /* Placeholder when no image */
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
-                  animate={
-                    showImage
-                      ? { scale: 1, opacity: 1 }
-                      : { scale: 0.8, opacity: 0 }
-                  }
+                  animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.5 }}
                   className="relative"
                 >
                   <div
-                    className="rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center shadow-2xl border border-gray-700"
+                    className={`rounded-2xl flex items-center justify-center shadow-2xl border transition-colors duration-500 ${
+                      isDark
+                        ? "bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700"
+                        : "bg-gradient-to-br from-gray-100 to-gray-200 border-gray-300"
+                    }`}
                     style={{ aspectRatio: "3/4", height: "500px" }}
                   >
-                    <div className="text-center text-gray-500">
+                    <div
+                      className={`text-center transition-colors duration-500 ${
+                        isDark ? "text-gray-500" : "text-gray-600"
+                      }`}
+                    >
                       <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center justify-center text-2xl font-bold text-white">
                         {personalInfo?.name?.[0] || "D"}
                       </div>
@@ -422,41 +393,25 @@ const Hero: React.FC = () => {
                   <motion.div
                     className="absolute -top-4 -left-4 w-8 h-8 border-l-2 border-t-2 border-red-500"
                     initial={{ opacity: 0, scale: 0 }}
-                    animate={
-                      showImage
-                        ? { opacity: 1, scale: 1 }
-                        : { opacity: 0, scale: 0 }
-                    }
+                    animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.8 }}
                   />
                   <motion.div
                     className="absolute -top-4 -right-4 w-8 h-8 border-r-2 border-t-2 border-red-500"
                     initial={{ opacity: 0, scale: 0 }}
-                    animate={
-                      showImage
-                        ? { opacity: 1, scale: 1 }
-                        : { opacity: 0, scale: 0 }
-                    }
+                    animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.9 }}
                   />
                   <motion.div
                     className="absolute -bottom-4 -left-4 w-8 h-8 border-l-2 border-b-2 border-red-500"
                     initial={{ opacity: 0, scale: 0 }}
-                    animate={
-                      showImage
-                        ? { opacity: 1, scale: 1 }
-                        : { opacity: 0, scale: 0 }
-                    }
+                    animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 1.0 }}
                   />
                   <motion.div
                     className="absolute -bottom-4 -right-4 w-8 h-8 border-r-2 border-b-2 border-red-500"
                     initial={{ opacity: 0, scale: 0 }}
-                    animate={
-                      showImage
-                        ? { opacity: 1, scale: 1 }
-                        : { opacity: 0, scale: 0 }
-                    }
+                    animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 1.1 }}
                   />
                 </motion.div>
