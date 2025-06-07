@@ -14,7 +14,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 const Certifications: React.FC = () => {
   const [certifications, setCertifications] = useState<Certification[]>([]);
-  const { ref, isVisible } = useScrollAnimation();
+  const { ref, isInView: isVisible } = useScrollAnimation();
   const { isDark } = useTheme();
 
   useEffect(() => {
