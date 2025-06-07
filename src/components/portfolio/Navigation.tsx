@@ -13,7 +13,7 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
-  const [showNavbar, setShowNavbar] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true); // Show immediately
   const { isDark } = useTheme();
 
   const navItems = [
@@ -26,13 +26,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
   ];
 
   useEffect(() => {
-    // Listen for the custom event from Hero component
-    const handleShowNavbar = () => {
-      setShowNavbar(true);
-    };
-
-    window.addEventListener("showNavbar", handleShowNavbar);
-
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
 
