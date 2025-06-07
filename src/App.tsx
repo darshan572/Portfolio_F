@@ -16,32 +16,34 @@ import "@/styles/animations.css";
 
 function App() {
   return (
-    <BrowserRouter>
-      <MagneticCursor />
-      <Routes>
-        {/* Public Portfolio */}
-        <Route path="/" element={<Portfolio />} />
+    <ThemeProvider>
+      <BrowserRouter>
+        <MagneticCursor />
+        <Routes>
+          {/* Public Portfolio */}
+          <Route path="/" element={<Portfolio />} />
 
-        {/* Admin Login */}
-        <Route path="/admin" element={<Login />} />
+          {/* Admin Login */}
+          <Route path="/admin" element={<Login />} />
 
-        {/* Admin Dashboard */}
-        <Route path="/admin/dashboard" element={<Dashboard />} />
+          {/* Admin Dashboard */}
+          <Route path="/admin/dashboard" element={<Dashboard />} />
 
-        {/* Admin Content Management Pages */}
-        <Route path="/admin/about" element={<AboutEditor />} />
-        <Route path="/admin/skills" element={<SkillsManager />} />
-        <Route path="/admin/projects" element={<ProjectsManager />} />
-        <Route
-          path="/admin/certifications"
-          element={<CertificationsManager />}
-        />
-        <Route path="/admin/education" element={<EducationManager />} />
-        <Route path="/admin/contact" element={<ContactAnalytics />} />
-        {/* 404 Fallback */}
-        <Route path="*" element={<Portfolio />} />
-      </Routes>
-    </BrowserRouter>
+          {/* Admin Content Management Pages */}
+          <Route path="/admin/about" element={<AboutEditor />} />
+          <Route path="/admin/skills" element={<SkillsManager />} />
+          <Route path="/admin/projects" element={<ProjectsManager />} />
+          <Route
+            path="/admin/certifications"
+            element={<CertificationsManager />}
+          />
+          <Route path="/admin/education" element={<EducationManager />} />
+          <Route path="/admin/contact" element={<ContactAnalytics />} />
+          {/* 404 Fallback */}
+          <Route path="*" element={<Portfolio />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
