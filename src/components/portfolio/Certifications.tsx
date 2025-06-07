@@ -12,8 +12,10 @@ import { Certification } from "@/types/portfolio";
 
 const Certifications: React.FC = () => {
   const [certifications, setCertifications] = useState<Certification[]>([]);
-  const ref = React.useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { ref, isInView } = useScrollAnimation({
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px",
+  });
 
   useEffect(() => {
     const manager = PortfolioManager.getInstance();
@@ -47,18 +49,43 @@ const Certifications: React.FC = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: {
+      opacity: 0,
+      y: 70,
+      scale: 0.9,
+      rotateX: 30,
+    },
     visible: {
       opacity: 1,
       y: 0,
+      scale: 1,
+      rotateX: 0,
       transition: {
-        duration: 0.6,
+        duration: 0.9,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
+  const certCardVariants = {
+    hidden: {
+      opacity: 0,
+      scale: 0.8,
+      y: 50,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
         ease: "easeOut",
       },
     },
