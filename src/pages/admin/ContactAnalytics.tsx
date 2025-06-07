@@ -89,6 +89,7 @@ const mockContactData = [
 ];
 
 const ContactAnalytics: React.FC = () => {
+  const navigate = useNavigate();
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
   const [socialLinks, setSocialLinks] = useState<SocialLinks | null>(null);
   const [contacts] = useState(mockContactData);
