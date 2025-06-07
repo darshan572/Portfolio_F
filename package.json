@@ -2,12 +2,15 @@
   "name": "fusion-starter",
   "private": true,
   "type": "module",
+  "homepage": "https://darshan572.github.io/Portfolio_F",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -78,6 +81,7 @@
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",
     "vite": "^6.2.2",
-    "vitest": "^3.1.4"
+    "vitest": "^3.1.4",
+    "gh-pages": "^6.1.1"
   }
 }
