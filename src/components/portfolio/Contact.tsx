@@ -37,7 +37,7 @@ const Contact: React.FC = () => {
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
     null,
   );
-  const { ref, isVisible } = useScrollAnimation();
+  const { ref, isInView: isVisible } = useScrollAnimation();
   const { isDark } = useTheme();
 
   useEffect(() => {
