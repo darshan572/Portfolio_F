@@ -128,7 +128,13 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
                 />
               </svg>
             </div>
-            <span className="text-white font-bold text-xl">Portfolio</span>
+            <span
+              className={`font-bold text-xl transition-colors duration-300 ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
+            >
+              Portfolio
+            </span>
           </motion.div>
 
           {/* Desktop Navigation */}
