@@ -9,7 +9,7 @@ import {
   Shield,
   AlertCircle,
 } from "lucide-react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthManager from "@/lib/auth";
 
 const Login: React.FC = () => {
@@ -20,7 +20,8 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Admin Login - Portfolio";
@@ -28,9 +29,11 @@ const Login: React.FC = () => {
     // Check if already authenticated
     const authManager = AuthManager.getInstance();
     if (authManager.isAuthenticated()) {
-      setIsAuthenticated(true);
+      navigate("/admin/dashboard", { replace: true });
+    } else {
+      setIsCheckingAuth(false);
     }
-  }, []);
+  }, [navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -48,7 +51,7 @@ const Login: React.FC = () => {
       const success = authManager.login(formData.username, formData.password);
 
       if (success) {
-        setIsAuthenticated(true);
+        navigate("/admin/dashboard", { replace: true });
       } else {
         setError("Invalid username or password");
       }
@@ -59,9 +62,13 @@ const Login: React.FC = () => {
     }
   };
 
-  // Redirect if authenticated
-  if (isAuthenticated) {
-    return <Navigate to="/admin/dashboard" replace />;
+  // Show loading state while checking authentication
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400" />
+      </div>
+    );
   }
 
   return (
@@ -82,12 +89,24 @@ const Login: React.FC = () => {
             key={i}
             className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-50"
             initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x:
+                Math.random() *
+                (typeof window !== "undefined" ? window.innerWidth : 1000),
+              y:
+                Math.random() *
+                (typeof window !== "undefined" ? window.innerHeight : 800),
             }}
             animate={{
-              x: [null, Math.random() * window.innerWidth],
-              y: [null, Math.random() * window.innerHeight],
+              x: [
+                null,
+                Math.random() *
+                  (typeof window !== "undefined" ? window.innerWidth : 1000),
+              ],
+              y: [
+                null,
+                Math.random() *
+                  (typeof window !== "undefined" ? window.innerHeight : 800),
+              ],
             }}
             transition={{
               duration: Math.random() * 20 + 10,
