@@ -152,8 +152,11 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
                 className={cn(
                   "relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 group",
                   activeSection === item.id
-                    ? "text-white"
-                    : "text-gray-400 hover:text-white",
+                    ? isDark ? "text-white" : "text-gray-900"
+                    : isDark
+                      ? "text-gray-400 hover:text-white"
+                      : "text-gray-600 hover:text-gray-900"
+                )}
                 )}
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
