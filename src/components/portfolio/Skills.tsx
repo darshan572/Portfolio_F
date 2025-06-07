@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import PortfolioManager from "@/lib/portfolio-manager";
 import { Skill } from "@/types/portfolio";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 const Skills: React.FC = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
