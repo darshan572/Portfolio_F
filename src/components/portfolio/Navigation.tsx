@@ -99,7 +99,18 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
             className="flex items-center space-x-2"
           >
             <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">D</span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-white"
+              >
+                <path d="M3 7L9 12L3 17V7Z" fill="currentColor" />
+                <path d="M14 7L20 12L14 17V7Z" fill="currentColor" />
+                <circle cx="12" cy="12" r="2" fill="currentColor" />
+              </svg>
             </div>
             <span className="text-white font-bold text-xl">Portfolio</span>
           </motion.div>
