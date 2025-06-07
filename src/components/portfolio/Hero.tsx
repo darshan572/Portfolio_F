@@ -41,17 +41,17 @@ const Hero: React.FC = () => {
       // Clear current title
       for (let i = currentTitle.length; i >= 0; i--) {
         setCurrentTitle(title.substring(0, i));
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 80));
       }
 
       // Type new title
       for (let i = 0; i <= title.length; i++) {
         setCurrentTitle(title.substring(0, i));
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 150));
       }
 
       // Wait before next title
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       setTitleIndex((prev) => (prev + 1) % titles.length);
     };
 
