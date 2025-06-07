@@ -334,10 +334,12 @@ const About: React.FC = () => {
 
                             <div className="text-right">
                               <span
-                                className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(edu.status)}`}
+                                className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(edu.status || "current")}`}
                               >
-                                {edu.status.charAt(0).toUpperCase() +
-                                  edu.status.slice(1)}
+                                {edu.status
+                                  ? edu.status.charAt(0).toUpperCase() +
+                                    edu.status.slice(1)
+                                  : "Current"}
                               </span>
                               <p
                                 className={`text-sm mt-1 transition-colors duration-500 ${
