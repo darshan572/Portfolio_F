@@ -150,9 +150,9 @@ const Hero: React.FC = () => {
 
             {/* Description */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
               className="max-w-lg"
             >
               <p className="text-gray-400 text-base md:text-lg leading-relaxed">
