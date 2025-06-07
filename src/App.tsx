@@ -9,6 +9,7 @@ import ProjectsManager from "@/pages/admin/ProjectsManager";
 import CertificationsManager from "@/pages/admin/CertificationsManager";
 import ContactAnalytics from "@/pages/admin/ContactAnalytics";
 import EducationManager from "@/pages/admin/EducationManager";
+import MagneticCursor from "@/components/ui/MagneticCursor";
 import "@/styles/engineering-theme.css";
 import "@/styles/animations.css";
 
