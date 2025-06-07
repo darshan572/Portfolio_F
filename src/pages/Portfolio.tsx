@@ -8,6 +8,7 @@ import Certifications from "@/components/portfolio/Certifications";
 import Contact from "@/components/portfolio/Contact";
 import ScrollProgress from "@/components/portfolio/ScrollProgress";
 import { checkAndResetData } from "@/lib/reset-data";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const Portfolio: React.FC = () => {
   useEffect(() => {
