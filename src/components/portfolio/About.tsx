@@ -312,58 +312,26 @@ const About: React.FC = () => {
                               <h4
                                 className={`font-semibold text-lg transition-colors duration-500 ${
                                   isDark ? "text-white" : "text-gray-900"
-                                }`}
-                              >
-                                {edu.degree}
-                              </h4>
-                              <p
-                                className={`transition-colors duration-500 ${
-                                  isDark ? "text-cyan-400" : "text-blue-600"
-                                }`}
-                              >
-                                {edu.institution}
-                              </p>
-                              <p
-                                className={`text-sm transition-colors duration-500 ${
-                                  isDark ? "text-gray-400" : "text-gray-600"
-                                }`}
-                              >
-                                {edu.field}
-                              </p>
-                            </div>
-
-                            <div className="text-right">
-                              <span
-                                className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(edu.status || "current")}`}
-                              >
-                                {edu.status
-                                  ? edu.status.charAt(0).toUpperCase() +
-                                    edu.status.slice(1)
-                                  : "Current"}
-                              </span>
-                              <p
-                                className={`text-sm mt-1 transition-colors duration-500 ${
-                                  isDark ? "text-gray-400" : "text-gray-600"
-                                }`}
-                              >
-                                {edu.startYear} - {edu.endYear || "Present"}
-                              </p>
-                            </div>
-                          </div>
-
-                          {edu.gpa && (
-                            <p
-                              className={`text-sm transition-colors duration-500 ${
-                                isDark ? "text-gray-300" : "text-gray-700"
-                              }`}
-                            >
-                              GPA:{" "}
-                              <span className="font-medium">{edu.gpa}</span>
-                            </p>
-                          )}
-
-                          {edu.achievements && edu.achievements.length > 0 && (
-                            <div className="space-y-1">
+                                {edu.achievements
+                                  .filter(achievement => achievement && achievement.trim())
+                                  .map((achievement, achIndex) => (
+                                    <li
+                                      key={achIndex}
+                                      className={`text-sm pl-4 relative transition-colors duration-500 ${
+                                        isDark
+                                          ? "text-gray-400"
+                                          : "text-gray-600"
+                                      }`}
+                                    >
+                                      <span
+                                        className={`absolute left-0 top-2 w-1 h-1 rounded-full ${
+                                          isDark ? "bg-cyan-400" : "bg-blue-500"
+                                        }`}
+                                      />
+                                      {achievement}
+                                    </li>
+                                  )
+                                )}
                               <p
                                 className={`text-sm font-medium transition-colors duration-500 ${
                                   isDark ? "text-gray-300" : "text-gray-700"
