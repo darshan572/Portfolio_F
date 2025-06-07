@@ -4,7 +4,7 @@
   "preview": "vite preview",
   "deploy": "gh-pages -d dist"
 },
-"homepage": "https://darshan572.github.io/Portfolio_F",
+"homepage": "https://darshan572.github.io/Portfolio_F/,
 
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
