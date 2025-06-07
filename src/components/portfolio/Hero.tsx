@@ -311,7 +311,9 @@ const Hero: React.FC = () => {
 
                 {/* Hover Background */}
                 <motion.div
-                  className="absolute inset-0 bg-white/5"
+                  className={`absolute inset-0 ${
+                    isDark ? "bg-white/5" : "bg-black/5"
+                  }`}
                   initial={{ scale: 0, borderRadius: "50%" }}
                   whileHover={{ scale: 1, borderRadius: "8px" }}
                   transition={{ duration: 0.4 }}
