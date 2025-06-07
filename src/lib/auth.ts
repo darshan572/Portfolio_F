@@ -49,11 +49,11 @@ class AuthManager {
       if (!savedUser) {
         // If no admin user exists, create one with the provided credentials
         this.initializeAdmin(username, password);
-        // Directly authenticate after creating user instead of recursive call
+        // Directly authenticate after creating user
         const authState: AuthState = {
           isAuthenticated: true,
           lastLogin: new Date().toISOString(),
-          sessionTimeout: this.SESSION_TIMEOUT
+          sessionTimeout: this.SESSION_TIMEOUT,
         };
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(authState));
         return true;
@@ -62,11 +62,14 @@ class AuthManager {
       const adminUser: AdminUser = JSON.parse(savedUser);
       const passwordHash = this.hashPassword(password);
 
-      if (adminUser.username === username && adminUser.passwordHash === passwordHash) {
+      if (
+        adminUser.username === username &&
+        adminUser.passwordHash === passwordHash
+      ) {
         const authState: AuthState = {
           isAuthenticated: true,
           lastLogin: new Date().toISOString(),
-          sessionTimeout: this.SESSION_TIMEOUT
+          sessionTimeout: this.SESSION_TIMEOUT,
         };
 
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(authState));
@@ -79,10 +82,9 @@ class AuthManager {
       }
       return false;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       return false;
     }
-  }
   }
 
   // Check if user is authenticated
@@ -101,18 +103,16 @@ class AuthManager {
         const timeDiff = now - lastLogin;
 
         if (timeDiff > authState.sessionTimeout) {
-          // Use a timeout to avoid immediate logout during component initialization
-          setTimeout(() => this.logout(), 100);
+          this.logout();
           return false;
         }
       }
 
       return true;
     } catch (error) {
-      console.error('Auth check error:', error);
+      console.error("Auth check error:", error);
       return false;
     }
-  }
   }
 
   // Logout
