@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import PortfolioManager from "@/lib/portfolio-manager";
 import { PersonalInfo, SocialLinks } from "@/types/portfolio";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const Hero: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
