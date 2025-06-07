@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import PortfolioManager from "@/lib/portfolio-manager";
 import { Certification } from "@/types/portfolio";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 const Certifications: React.FC = () => {
   const [certifications, setCertifications] = useState<Certification[]>([]);
