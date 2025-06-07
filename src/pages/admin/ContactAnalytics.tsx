@@ -1,5 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  MessageCircle,
+  Clock,
+  ExternalLink,
+  Download,
+  Trash2,
+  Star,
+} from "lucide-react";
+import AdminLayout from "./AdminLayout";
+import { motion } from "framer-motion";
 import {
   Mail,
   Phone,
