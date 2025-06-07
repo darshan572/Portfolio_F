@@ -1,27 +1,35 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import Portfolio from "@/pages/Portfolio";
+import Login from "@/pages/admin/Login";
+import Dashboard from "@/pages/admin/Dashboard";
+import "@/styles/engineering-theme.css";
+import "@/styles/animations.css";
 
-const queryClient = new QueryClient();
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Public Portfolio */}
+        <Route path="/" element={<Portfolio />} />
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+        {/* Admin Routes */}
+        <Route path="/admin" element={<Login />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
+
+        {/* Admin Content Management Routes */}
+        <Route path="/admin/about" element={<Dashboard />} />
+        <Route path="/admin/skills" element={<Dashboard />} />
+        <Route path="/admin/projects" element={<Dashboard />} />
+        <Route path="/admin/certifications" element={<Dashboard />} />
+        <Route path="/admin/contact" element={<Dashboard />} />
+        <Route path="/admin/settings" element={<Dashboard />} />
+
+        {/* 404 Fallback */}
+        <Route path="*" element={<Portfolio />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
 export default App;
