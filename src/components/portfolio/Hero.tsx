@@ -1,25 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion, useAnimation } from "framer-motion";
-import { Github, Linkedin, Mail, Download, ArrowDown } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import PortfolioManager from "@/lib/portfolio-manager";
 import { PersonalInfo, SocialLinks } from "@/types/portfolio";
 
 const Hero: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
   const [socialLinks, setSocialLinks] = useState<SocialLinks | null>(null);
-  const [currentTitle, setCurrentTitle] = useState("");
-  const [titleIndex, setTitleIndex] = useState(0);
-  const [isTyping, setIsTyping] = useState(false);
-  const controls = useAnimation();
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const titles = [
-    "Full Stack Developer",
-    "Software Engineer",
-    "B.Tech CSE Student",
-    "Problem Solver",
-    "Tech Enthusiast",
-  ];
 
   useEffect(() => {
     const manager = PortfolioManager.getInstance();
@@ -36,294 +23,241 @@ const Hero: React.FC = () => {
       window.removeEventListener("portfolioDataUpdated", handleDataUpdate);
   }, []);
 
-  useEffect(() => {
-    if (isTyping) return; // Prevent multiple typewriter effects running
-
-    const typeTitle = async () => {
-      setIsTyping(true);
-      const title = titles[titleIndex];
-
-      // Clear current title first
-      if (currentTitle.length > 0) {
-        for (let i = currentTitle.length; i >= 0; i--) {
-          setCurrentTitle(currentTitle.substring(0, i));
-          await new Promise((resolve) => setTimeout(resolve, 60));
-        }
-      }
-
-      // Wait a bit before typing new title
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      // Type new title
-      for (let i = 0; i <= title.length; i++) {
-        setCurrentTitle(title.substring(0, i));
-        await new Promise((resolve) => setTimeout(resolve, 120));
-      }
-
-      // Wait before next title
-      await new Promise((resolve) => setTimeout(resolve, 2500));
-
-      setTitleIndex((prev) => (prev + 1) % titles.length);
-      setIsTyping(false);
-    };
-
-    // Use timeout to avoid immediate execution
-    timeoutRef.current = setTimeout(() => {
-      typeTitle();
-    }, 100);
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [titleIndex, isTyping]); // Removed currentTitle.length from dependencies
-
-  useEffect(() => {
-    controls.start({
-      rotate: 360,
-      transition: {
-        duration: 20,
-        repeat: Infinity,
-        ease: "linear",
-      },
-    });
-  }, [controls]);
-
-  const scrollToNext = () => {
-    const aboutSection = document.getElementById("about");
-    if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: "smooth" });
+  const scrollToProjects = () => {
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  const socialIcons = [
-    { Icon: Github, url: socialLinks?.github, label: "GitHub" },
-    { Icon: Linkedin, url: socialLinks?.linkedin, label: "LinkedIn" },
-    { Icon: Mail, url: `mailto:${personalInfo?.email}`, label: "Email" },
-  ];
+  const scrollToContact = () => {
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black"
+      className="min-h-screen relative overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #0a0a0a 100%)",
+      }}
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-20">
-        <div
-          className={
-            'absolute inset-0 bg-[url(\'data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%2300d4ff" fill-opacity="0.1"%3E%3Ccircle cx="7" cy="7" r="1"/%3E%3Ccircle cx="53" cy="7" r="1"/%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3Ccircle cx="7" cy="53" r="1"/%3E%3Ccircle cx="53" cy="53" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\')] bg-repeat'
-          }
-        />
-      </div>
+      {/* Grid Background */}
+      <div
+        className="absolute inset-0 opacity-30"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: "50px 50px",
+        }}
+      />
 
-      {/* Floating Particles */}
-      <div className="absolute inset-0 overflow-hidden">
-        {Array.from({ length: 20 }).map((_, i) => (
+      {/* Animated Grid Points */}
+      <div className="absolute inset-0">
+        {Array.from({ length: 15 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-cyan-400 rounded-full"
-            initial={{
-              x:
-                Math.random() *
-                (typeof window !== "undefined" ? window.innerWidth : 1000),
-              y: typeof window !== "undefined" ? window.innerHeight : 800,
-              opacity: 0,
-            }}
-            animate={{
-              y: -50,
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
+            className="absolute w-2 h-2 bg-red-500 rounded-full opacity-60"
             style={{
               left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              scale: [1, 1.5, 1],
+              opacity: [0.6, 1, 0.6],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
             }}
           />
         ))}
       </div>
 
-      {/* Circuit Board Animation */}
-      <motion.div
-        className="absolute top-20 right-20 w-32 h-32 opacity-30"
-        animate={controls}
-      >
-        <svg viewBox="0 0 100 100" className="w-full h-full">
-          <circle
-            cx="50"
-            cy="50"
-            r="45"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            className="text-cyan-400"
-          />
-          <circle
-            cx="50"
-            cy="50"
-            r="35"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            className="text-green-400"
-          />
-          <circle
-            cx="50"
-            cy="50"
-            r="25"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            className="text-orange-400"
-          />
-          {Array.from({ length: 8 }).map((_, i) => (
-            <line
-              key={i}
-              x1="50"
-              y1="50"
-              x2={50 + 40 * Math.cos((i * Math.PI) / 4)}
-              y2={50 + 40 * Math.sin((i * Math.PI) / 4)}
-              stroke="currentColor"
-              strokeWidth="1"
-              className="text-cyan-400"
-            />
-          ))}
-        </svg>
-      </motion.div>
-
-      <div className="container mx-auto px-4 text-center relative z-10">
-        <div className="max-w-4xl mx-auto">
-          {/* Main Heading */}
+      {/* Main Content Container */}
+      <div className="container mx-auto px-4 h-screen flex items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center w-full">
+          {/* Left Side - Text Content */}
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="mb-6"
+            className="text-left space-y-6"
           >
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4">
-              <span className="text-white">Hello, I'm </span>
-              <span className="bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
-                {personalInfo?.name || "Your Name"}
-              </span>
-            </h1>
-          </motion.div>
-
-          {/* Animated Title */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mb-8"
-          >
-            <div className="text-2xl md:text-4xl lg:text-5xl font-semibold text-gray-300 h-16 flex items-center justify-center">
-              <span className="font-mono min-w-0">{currentTitle}</span>
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{
-                  duration: 0.5,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                }}
-                className="ml-1 text-cyan-400"
-              >
-                |
-              </motion.span>
-            </div>
-          </motion.div>
-
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed"
-          >
-            {personalInfo?.introduction ||
-              "Passionate computer science student with a focus on software development and emerging technologies."}
-          </motion.p>
-
-          {/* Action Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
-          >
-            <motion.button
-              onClick={() => scrollToNext()}
-              className="group relative px-8 py-4 bg-gradient-to-r from-cyan-400 to-green-400 text-black font-semibold rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-400/25"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            {/* Hello Text */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-gray-400 text-lg md:text-xl font-light"
             >
-              <span className="relative z-10">View My Work</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </motion.button>
+              Hello there, I am
+            </motion.p>
 
-            {personalInfo?.resumePdf && (
-              <motion.a
-                href={personalInfo.resumePdf}
-                download
-                className="group flex items-center space-x-2 px-8 py-4 border-2 border-cyan-400 text-cyan-400 font-semibold rounded-lg hover:bg-cyan-400 hover:text-black transition-all duration-300"
+            {/* Name */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+            >
+              {personalInfo?.name || "Darshan Kumar"}
+            </motion.h1>
+
+            {/* Title with Underline */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="relative"
+            >
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-gray-300 mb-4">
+                {personalInfo?.title || "Full Stack Developer"}
+              </h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-red-500 to-pink-500 rounded-full" />
+            </motion.div>
+
+            {/* Description */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="max-w-lg"
+            >
+              <p className="text-gray-400 text-base md:text-lg leading-relaxed">
+                {personalInfo?.introduction ||
+                  `I'm a 3rd year Computer Science and Engineering student at Quantum University, New Delhi.`}
+              </p>
+            </motion.div>
+
+            {/* Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.0 }}
+              className="flex flex-col sm:flex-row gap-4 pt-4"
+            >
+              {/* Say Hello Button */}
+              <motion.button
+                onClick={scrollToContact}
+                className="group relative px-8 py-4 bg-gradient-to-r from-red-500 to-pink-600 text-white font-semibold rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-red-500/25"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Download size={20} />
-                <span>Download Resume</span>
-              </motion.a>
-            )}
+                <span className="relative z-10 flex items-center gap-2">
+                  Say Hello!
+                  <ArrowRight
+                    size={18}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </motion.button>
+
+              {/* My Projects Button */}
+              <motion.button
+                onClick={scrollToProjects}
+                className="group flex items-center gap-2 px-8 py-4 border border-gray-600 text-gray-300 font-semibold rounded-lg hover:border-gray-400 hover:text-white transition-all duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                My Projects
+                <ExternalLink
+                  size={18}
+                  className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                />
+              </motion.button>
+            </motion.div>
           </motion.div>
 
-          {/* Social Links */}
+          {/* Right Side - Image */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-            className="flex justify-center space-x-6"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="flex justify-center lg:justify-end"
           >
-            {socialIcons.map(
-              ({ Icon, url, label }, index) =>
-                url && (
-                  <motion.a
-                    key={label}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group p-4 rounded-full border border-gray-600 text-gray-400 hover:border-cyan-400 hover:text-cyan-400 transition-all duration-300"
-                    whileHover={{ scale: 1.1, y: -5 }}
-                    whileTap={{ scale: 0.9 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2 + index * 0.1 }}
+            <div className="relative max-w-md w-full">
+              {personalInfo?.profileImage ? (
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.5 }}
+                  className="relative"
+                >
+                  <div className="rounded-2xl overflow-hidden shadow-2xl">
+                    <img
+                      src={personalInfo.profileImage}
+                      alt={personalInfo.name}
+                      className="w-full h-auto object-cover"
+                      style={{ aspectRatio: "3/4" }}
+                    />
+                  </div>
+
+                  {/* Decorative elements around image */}
+                  <div className="absolute -top-4 -left-4 w-8 h-8 border-l-2 border-t-2 border-red-500"></div>
+                  <div className="absolute -top-4 -right-4 w-8 h-8 border-r-2 border-t-2 border-red-500"></div>
+                  <div className="absolute -bottom-4 -left-4 w-8 h-8 border-l-2 border-b-2 border-red-500"></div>
+                  <div className="absolute -bottom-4 -right-4 w-8 h-8 border-r-2 border-b-2 border-red-500"></div>
+                </motion.div>
+              ) : (
+                /* Placeholder when no image */
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.5 }}
+                  className="relative"
+                >
+                  <div
+                    className="rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center shadow-2xl border border-gray-700"
+                    style={{ aspectRatio: "3/4", height: "500px" }}
                   >
-                    <Icon size={24} />
-                    <span className="sr-only">{label}</span>
-                  </motion.a>
-                ),
-            )}
+                    <div className="text-center text-gray-500">
+                      <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center justify-center text-2xl font-bold text-white">
+                        {personalInfo?.name?.[0] || "D"}
+                      </div>
+                      <p className="text-sm">Add your photo in admin panel</p>
+                    </div>
+                  </div>
+
+                  {/* Decorative elements */}
+                  <div className="absolute -top-4 -left-4 w-8 h-8 border-l-2 border-t-2 border-red-500"></div>
+                  <div className="absolute -top-4 -right-4 w-8 h-8 border-r-2 border-t-2 border-red-500"></div>
+                  <div className="absolute -bottom-4 -left-4 w-8 h-8 border-l-2 border-b-2 border-red-500"></div>
+                  <div className="absolute -bottom-4 -right-4 w-8 h-8 border-r-2 border-b-2 border-red-500"></div>
+                </motion.div>
+              )}
+            </div>
           </motion.div>
         </div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        >
-          <motion.button
-            onClick={scrollToNext}
-            className="flex flex-col items-center text-gray-400 hover:text-cyan-400 transition-colors"
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <span className="text-sm mb-2">Scroll Down</span>
-            <ArrowDown size={20} />
-          </motion.button>
-        </motion.div>
       </div>
+
+      {/* Bottom Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center"
+        >
+          <motion.div
+            animate={{ y: [0, 12, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-1 h-3 bg-gray-600 rounded-full mt-2"
+          />
+        </motion.div>
+      </motion.div>
     </section>
   );
 };
