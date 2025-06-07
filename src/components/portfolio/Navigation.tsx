@@ -49,7 +49,6 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("showNavbar", handleShowNavbar);
     };
   }, [navItems]);
 
