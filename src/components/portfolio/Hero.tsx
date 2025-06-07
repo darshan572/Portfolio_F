@@ -61,10 +61,9 @@ const Hero: React.FC = () => {
       className="min-h-screen relative overflow-hidden transition-all duration-500"
       style={{
         background: isDark
-          ? 'linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #0a0a0a 100%)'
-          : 'linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%)'
+          ? "linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #0a0a0a 100%)"
+          : "linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%)",
       }}
-    >
     >
       {/* Grid Background */}
       <div
