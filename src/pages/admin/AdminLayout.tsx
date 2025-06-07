@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LogOut,
@@ -10,7 +10,7 @@ import {
   Settings,
   ChevronDown,
 } from "lucide-react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthManager from "@/lib/auth";
 
 interface AdminLayoutProps {
@@ -18,24 +18,30 @@ interface AdminLayoutProps {
 }
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [adminUser, setAdminUser] = useState<any>(null);
   const [sessionTime, setSessionTime] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const navigate = useNavigate();
 
+  const handleLogout = useCallback(() => {
+    const authManager = AuthManager.getInstance();
+    authManager.logout();
+    navigate("/admin", { replace: true });
+  }, [navigate]);
+
   useEffect(() => {
     const authManager = AuthManager.getInstance();
 
     // Check authentication
     if (!authManager.isAuthenticated()) {
-      setIsAuthenticated(false);
+      navigate("/admin", { replace: true });
       return;
     }
 
-    setIsAuthenticated(true);
     setAdminUser(authManager.getAdminUser());
+    setIsLoading(false);
 
     // Update session time every minute
     const updateSessionTime = () => {
@@ -46,29 +52,21 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     const interval = setInterval(updateSessionTime, 60000); // Update every minute
 
     // Listen for logout events
-    const handleLogout = () => {
-      setIsAuthenticated(false);
-      navigate("/admin");
-    };
-
     window.addEventListener("adminLogout", handleLogout);
 
     return () => {
       clearInterval(interval);
       window.removeEventListener("adminLogout", handleLogout);
     };
-  }, [navigate]);
+  }, [navigate, handleLogout]);
 
-  const handleLogout = () => {
-    const authManager = AuthManager.getInstance();
-    authManager.logout();
-    setIsAuthenticated(false);
-    navigate("/admin");
-  };
-
-  // Redirect if not authenticated
-  if (!isAuthenticated) {
-    return <Navigate to="/admin" replace />;
+  // Show loading state instead of redirecting
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400" />
+      </div>
+    );
   }
 
   return (
