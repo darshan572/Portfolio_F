@@ -6,6 +6,7 @@ import Skills from "@/components/portfolio/Skills";
 import Projects from "@/components/portfolio/Projects";
 import Certifications from "@/components/portfolio/Certifications";
 import Contact from "@/components/portfolio/Contact";
+import ScrollProgress from "@/components/portfolio/ScrollProgress";
 import { checkAndResetData } from "@/lib/reset-data";
 
 const Portfolio: React.FC = () => {
@@ -26,6 +27,7 @@ const Portfolio: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      <ScrollProgress />
       <Navigation />
       <main>
         <Hero />
