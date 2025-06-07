@@ -304,7 +304,7 @@ const ContactAnalytics: React.FC = () => {
                 Your Contact Information
               </h3>
               <button
-                onClick={() => (window.location.href = "/admin/about")}
+                onClick={() => navigate("/admin/about")}
                 className="text-blue-400 hover:text-blue-300 text-sm flex items-center space-x-1"
               >
                 <span>Edit</span>
