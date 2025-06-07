@@ -6,6 +6,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide default cursor globally */
+* {
+  cursor: none !important;
+}
+
+/* Ensure all interactive elements also hide cursor */
+button,
+a,
+input,
+textarea,
+select,
+[role="button"],
+[data-magnetic] {
+  cursor: none !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
