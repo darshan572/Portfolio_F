@@ -96,16 +96,18 @@ class AuthManager {
         const timeDiff = now - lastLogin;
 
         if (timeDiff > authState.sessionTimeout) {
-          this.logout();
+          // Use a timeout to avoid immediate logout during component initialization
+          setTimeout(() => this.logout(), 100);
           return false;
         }
       }
 
       return true;
     } catch (error) {
-      console.error("Auth check error:", error);
+      console.error('Auth check error:', error);
       return false;
     }
+  }
   }
 
   // Logout
