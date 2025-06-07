@@ -13,14 +13,11 @@ import {
   Star,
 } from "lucide-react";
 import AdminLayout from "./AdminLayout";
-import {
   MessageSquare,
   Users,
   TrendingUp,
   Calendar,
-  Clock,
   Eye,
-  ExternalLink,
 } from "lucide-react";
 import AdminLayout from "./AdminLayout";
 import PortfolioManager from "@/lib/portfolio-manager";
