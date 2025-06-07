@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { Github, Linkedin, Mail, Download, ArrowDown } from "lucide-react";
 import PortfolioManager from "@/lib/portfolio-manager";
@@ -9,7 +9,9 @@ const Hero: React.FC = () => {
   const [socialLinks, setSocialLinks] = useState<SocialLinks | null>(null);
   const [currentTitle, setCurrentTitle] = useState("");
   const [titleIndex, setTitleIndex] = useState(0);
+  const [isTyping, setIsTyping] = useState(false);
   const controls = useAnimation();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const titles = [
     "Full Stack Developer",
@@ -35,28 +37,47 @@ const Hero: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (isTyping) return; // Prevent multiple typewriter effects running
+
     const typeTitle = async () => {
+      setIsTyping(true);
       const title = titles[titleIndex];
 
-      // Clear current title
-      for (let i = currentTitle.length; i >= 0; i--) {
-        setCurrentTitle(title.substring(0, i));
-        await new Promise((resolve) => setTimeout(resolve, 80));
+      // Clear current title first
+      if (currentTitle.length > 0) {
+        for (let i = currentTitle.length; i >= 0; i--) {
+          setCurrentTitle(currentTitle.substring(0, i));
+          await new Promise((resolve) => setTimeout(resolve, 60));
+        }
       }
+
+      // Wait a bit before typing new title
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Type new title
       for (let i = 0; i <= title.length; i++) {
         setCurrentTitle(title.substring(0, i));
-        await new Promise((resolve) => setTimeout(resolve, 150));
+        await new Promise((resolve) => setTimeout(resolve, 120));
       }
 
       // Wait before next title
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 2500));
+
       setTitleIndex((prev) => (prev + 1) % titles.length);
+      setIsTyping(false);
     };
 
-    typeTitle();
-  }, [titleIndex, titles, currentTitle.length]);
+    // Use timeout to avoid immediate execution
+    timeoutRef.current = setTimeout(() => {
+      typeTitle();
+    }, 100);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [titleIndex, isTyping]); // Removed currentTitle.length from dependencies
 
   useEffect(() => {
     controls.start({
@@ -103,8 +124,10 @@ const Hero: React.FC = () => {
             key={i}
             className="absolute w-1 h-1 bg-cyan-400 rounded-full"
             initial={{
-              x: Math.random() * window.innerWidth,
-              y: window.innerHeight,
+              x:
+                Math.random() *
+                (typeof window !== "undefined" ? window.innerWidth : 1000),
+              y: typeof window !== "undefined" ? window.innerHeight : 800,
               opacity: 0,
             }}
             animate={{
@@ -214,7 +237,7 @@ const Hero: React.FC = () => {
             className="mb-8"
           >
             <div className="text-2xl md:text-4xl lg:text-5xl font-semibold text-gray-300 h-16 flex items-center justify-center">
-              <span className="font-mono">{currentTitle}</span>
+              <span className="font-mono min-w-0">{currentTitle}</span>
               <motion.span
                 animate={{ opacity: [1, 0] }}
                 transition={{
