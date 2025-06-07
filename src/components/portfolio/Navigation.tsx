@@ -69,7 +69,7 @@ const Navigation: React.FC<NavigationProps> = ({ className }) => {
   };
 
   const handleAdminRedirect = () => {
-    window.location.href = "/admin";
+    navigate("/admin");
   };
 
   if (!showNavbar) return null;
