@@ -11,6 +11,8 @@ import { checkAndResetData } from "@/lib/reset-data";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const Portfolio: React.FC = () => {
+  const { isDark } = useTheme();
+
   useEffect(() => {
     // Set page title
     document.title = "Darshan Kumar - Portfolio | B.Tech CSE Student";
@@ -27,7 +29,11 @@ const Portfolio: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className={`min-h-screen transition-colors duration-500 ${
+      isDark
+        ? 'bg-black text-white'
+        : 'bg-white text-gray-900'
+    }`}
       <ScrollProgress />
       <Navigation />
       <main>
