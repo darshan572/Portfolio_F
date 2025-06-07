@@ -137,9 +137,9 @@ const Hero: React.FC = () => {
 
             {/* Title with Underline */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 1.0 }}
               className="relative"
             >
               <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-gray-300 mb-4">
