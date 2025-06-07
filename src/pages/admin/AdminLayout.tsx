@@ -70,7 +70,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+    <div className="h-screen overflow-hidden bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex">
       {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -87,8 +87,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       {/* Sidebar */}
       <motion.aside
         initial={false}
-        animate={{ x: sidebarOpen ? 0 : "-100%" }}
-        className="fixed left-0 top-0 h-full w-80 bg-gray-800/90 backdrop-blur-lg border-r border-gray-700/50 z-50 lg:translate-x-0 lg:static lg:z-auto"
+        animate={{ x: sidebarOpen ? 0 : '-100%' }}
+        className="fixed left-0 top-0 h-full w-80 bg-gray-800/90 backdrop-blur-lg border-r border-gray-700/50 z-50 lg:relative lg:translate-x-0 lg:z-auto"
+      >
       >
         <div className="p-6 h-full flex flex-col">
           {/* Header */}
@@ -201,9 +202,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       </motion.aside>
 
       {/* Main Content */}
-      <div className="lg:ml-80 min-h-screen">
+      <div className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Top Bar */}
-        <header className="h-16 bg-gray-800/50 backdrop-blur-lg border-b border-gray-700/50 flex items-center justify-between px-6">
+        <header className="h-16 bg-gray-800/50 backdrop-blur-lg border-b border-gray-700/50 flex items-center justify-between px-6 flex-shrink-0">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -230,7 +231,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         </header>
 
         {/* Page Content */}
-        <main className="p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto p-6">
+          {children}
+        </main>
       </div>
     </div>
   );
