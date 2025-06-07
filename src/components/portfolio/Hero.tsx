@@ -153,7 +153,9 @@ const Hero: React.FC = () => {
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+              className={`text-4xl md:text-6xl lg:text-7xl font-bold leading-tight transition-colors duration-500 ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
             >
               {personalInfo?.name || "Darshan Kumar"}
             </motion.h1>
