@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import PortfolioManager from "@/lib/portfolio-manager";
 import { PersonalInfo, SocialLinks } from "@/types/portfolio";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 const Contact: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
