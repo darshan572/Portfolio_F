@@ -87,8 +87,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       {/* Sidebar */}
       <motion.aside
         initial={false}
-        animate={{ x: sidebarOpen ? 0 : "-100%" }}
-        className="fixed left-0 top-0 h-full w-80 bg-gray-800/90 backdrop-blur-lg border-r border-gray-700/50 z-50 lg:relative lg:translate-x-0 lg:z-auto"
+        animate={{
+          x: typeof window !== 'undefined' && window.innerWidth >= 1024 ? 0 : (sidebarOpen ? 0 : '-100%')
+        }}
+        className="fixed left-0 top-0 h-full w-80 bg-gray-800/90 backdrop-blur-lg border-r border-gray-700/50 z-50 lg:relative lg:translate-x-0 lg:z-auto lg:block"
+      >
       >
         <div className="p-6 h-full flex flex-col">
           {/* Header */}
