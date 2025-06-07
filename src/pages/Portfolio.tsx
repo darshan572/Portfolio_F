@@ -27,7 +27,6 @@ const Portfolio: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <MagneticCursor />
       <ScrollProgress />
       <Navigation />
       <main>
