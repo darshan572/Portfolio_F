@@ -3,7 +3,7 @@ import { motion, useInView } from "framer-motion";
 import { MapPin, Calendar, GraduationCap, Code, Award } from "lucide-react";
 import PortfolioManager from "@/lib/portfolio-manager";
 import { PersonalInfo, Education } from "@/types/portfolio";
-import useScrollAnimation from "@/hooks/use-scroll-animation";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 const About: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
