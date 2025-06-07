@@ -28,6 +28,7 @@ const About: React.FC = () => {
   }, []);
 
   const getStatusBadge = (status: string) => {
+    const safeStatus = status || "current";
     const statusColors = {
       current: isDark
         ? "bg-green-500/20 text-green-400 border-green-500/30"
@@ -40,8 +41,14 @@ const About: React.FC = () => {
         : "bg-orange-100 text-orange-700 border-orange-300",
     };
     return (
-      statusColors[status as keyof typeof statusColors] || statusColors.current
+      statusColors[safeStatus as keyof typeof statusColors] ||
+      statusColors.current
     );
+  };
+
+  const formatStatus = (status: string | undefined) => {
+    if (!status) return "Current";
+    return status.charAt(0).toUpperCase() + status.slice(1);
   };
 
   return (
@@ -312,8 +319,71 @@ const About: React.FC = () => {
                               <h4
                                 className={`font-semibold text-lg transition-colors duration-500 ${
                                   isDark ? "text-white" : "text-gray-900"
+                                }`}
+                              >
+                                {edu.degree || "Degree"}
+                              </h4>
+                              <p
+                                className={`transition-colors duration-500 ${
+                                  isDark ? "text-cyan-400" : "text-blue-600"
+                                }`}
+                              >
+                                {edu.institution || "Institution"}
+                              </p>
+                              <p
+                                className={`text-sm transition-colors duration-500 ${
+                                  isDark ? "text-gray-400" : "text-gray-600"
+                                }`}
+                              >
+                                {edu.field || "Field of Study"}
+                              </p>
+                            </div>
+
+                            <div className="text-right">
+                              <span
+                                className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(edu.status)}`}
+                              >
+                                {formatStatus(edu.status)}
+                              </span>
+                              <p
+                                className={`text-sm mt-1 transition-colors duration-500 ${
+                                  isDark ? "text-gray-400" : "text-gray-600"
+                                }`}
+                              >
+                                {edu.startYear || "2021"} -{" "}
+                                {edu.endYear || "Present"}
+                              </p>
+                            </div>
+                          </div>
+
+                          {edu.gpa && (
+                            <p
+                              className={`text-sm transition-colors duration-500 ${
+                                isDark ? "text-gray-300" : "text-gray-700"
+                              }`}
+                            >
+                              GPA:{" "}
+                              <span className="font-medium">{edu.gpa}</span>
+                            </p>
+                          )}
+
+                          {edu.achievements && edu.achievements.length > 0 && (
+                            <div className="space-y-1">
+                              <p
+                                className={`text-sm font-medium transition-colors duration-500 ${
+                                  isDark ? "text-gray-300" : "text-gray-700"
+                                }`}
+                              >
+                                Achievements:
+                              </p>
+                              <ul className="space-y-1">
                                 {edu.achievements
-                                  .filter(achievement => achievement && achievement.trim())
+                                  .filter(
+                                    (achievement) =>
+                                      achievement &&
+                                      typeof achievement === "string" &&
+                                      achievement.trim(),
+                                  )
                                   .map((achievement, achIndex) => (
                                     <li
                                       key={achIndex}
@@ -330,35 +400,7 @@ const About: React.FC = () => {
                                       />
                                       {achievement}
                                     </li>
-                                  )
-                                )}
-                              <p
-                                className={`text-sm font-medium transition-colors duration-500 ${
-                                  isDark ? "text-gray-300" : "text-gray-700"
-                                }`}
-                              >
-                                Achievements:
-                              </p>
-                              <ul className="space-y-1">
-                                {edu.achievements.map(
-                                  (achievement, achIndex) => (
-                                    <li
-                                      key={achIndex}
-                                      className={`text-sm pl-4 relative transition-colors duration-500 ${
-                                        isDark
-                                          ? "text-gray-400"
-                                          : "text-gray-600"
-                                      }`}
-                                    >
-                                      <span
-                                        className={`absolute left-0 top-2 w-1 h-1 rounded-full ${
-                                          isDark ? "bg-cyan-400" : "bg-blue-500"
-                                        }`}
-                                      />
-                                      {achievement}
-                                    </li>
-                                  ),
-                                )}
+                                  ))}
                               </ul>
                             </div>
                           )}
