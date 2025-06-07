@@ -8,6 +8,7 @@ import SkillsManager from "@/pages/admin/SkillsManager";
 import ProjectsManager from "@/pages/admin/ProjectsManager";
 import CertificationsManager from "@/pages/admin/CertificationsManager";
 import ContactAnalytics from "@/pages/admin/ContactAnalytics";
+import EducationManager from "@/pages/admin/EducationManager";
 import "@/styles/engineering-theme.css";
 import "@/styles/animations.css";
 
@@ -32,8 +33,8 @@ function App() {
           path="/admin/certifications"
           element={<CertificationsManager />}
         />
+        <Route path="/admin/education" element={<EducationManager />} />
         <Route path="/admin/contact" element={<ContactAnalytics />} />
-
         {/* 404 Fallback */}
         <Route path="*" element={<Portfolio />} />
       </Routes>

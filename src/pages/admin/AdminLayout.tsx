@@ -254,10 +254,16 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 }}
                 className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all duration-200 text-left"
                 whileHover={{ x: 5 }}
-              >
-                <item.icon size={20} />
-                <span>{item.label}</span>
-              </motion.button>
+            {[
+              { href: '/admin/dashboard', label: 'Dashboard', icon: Home },
+              { href: '/admin/about', label: 'About Section', icon: User },
+              { href: '/admin/skills', label: 'Skills', icon: Settings },
+              { href: '/admin/projects', label: 'Projects', icon: Settings },
+              { href: '/admin/certifications', label: 'Certifications', icon: Settings },
+              { href: '/admin/education', label: 'Education', icon: Settings },
+              { href: '/admin/contact', label: 'Contact', icon: Settings },
+            ].map((item) => (
+              <motion.button
             ))}
           </nav>
 
