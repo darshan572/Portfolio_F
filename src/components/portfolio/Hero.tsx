@@ -163,9 +163,9 @@ const Hero: React.FC = () => {
 
             {/* Buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.0 }}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 1.4 }}
               className="flex flex-col sm:flex-row gap-4 pt-4"
             >
               {/* Say Hello Button */}
