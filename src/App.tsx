@@ -16,6 +16,7 @@ import "@/styles/animations.css";
 function App() {
   return (
     <BrowserRouter>
+      <MagneticCursor />
       <Routes>
         {/* Public Portfolio */}
         <Route path="/" element={<Portfolio />} />
