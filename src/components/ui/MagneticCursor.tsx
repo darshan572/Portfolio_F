@@ -8,6 +8,7 @@ const MagneticCursor: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const requestRef = useRef<number>();
   const previousTimeRef = useRef<number>();
+  const { isDark } = useTheme();
 
   // Optimized mouse position update with RAF
   const updateMousePosition = useCallback(
