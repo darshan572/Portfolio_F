@@ -13,10 +13,7 @@ import {
   Star,
 } from "lucide-react";
 import AdminLayout from "./AdminLayout";
-import { motion } from "framer-motion";
 import {
-  Mail,
-  Phone,
   MessageSquare,
   Users,
   TrendingUp,
