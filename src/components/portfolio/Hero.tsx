@@ -10,6 +10,7 @@ const Hero: React.FC = () => {
   const [socialLinks, setSocialLinks] = useState<SocialLinks | null>(null);
   const [showImage, setShowImage] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const manager = PortfolioManager.getInstance();
