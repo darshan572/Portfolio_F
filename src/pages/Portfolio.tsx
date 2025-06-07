@@ -29,11 +29,11 @@ const Portfolio: React.FC = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 ${
-      isDark
-        ? 'bg-black text-white'
-        : 'bg-white text-gray-900'
-    }`}
+    <div
+      className={`min-h-screen transition-colors duration-500 ${
+        isDark ? "bg-black text-white" : "bg-white text-gray-900"
+      }`}
+    >
       <ScrollProgress />
       <Navigation />
       <main>
