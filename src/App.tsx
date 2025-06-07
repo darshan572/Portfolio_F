@@ -17,7 +17,8 @@ import "@/styles/animations.css";
 function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
+      {/* Set basename for GitHub Pages deployment */}
+      <BrowserRouter basename="/Portfolio_F">
         <MagneticCursor />
         <Routes>
           {/* Public Portfolio */}
@@ -39,6 +40,7 @@ function App() {
           />
           <Route path="/admin/education" element={<EducationManager />} />
           <Route path="/admin/contact" element={<ContactAnalytics />} />
+
           {/* 404 Fallback */}
           <Route path="*" element={<Portfolio />} />
         </Routes>
