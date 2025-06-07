@@ -56,11 +56,11 @@ const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="min-h-screen relative overflow-hidden cursor-none"
+      className="min-h-screen relative overflow-hidden"
       style={{
-        background:
-          "linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #0a0a0a 100%)",
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #0a0a0a 100%)'
       }}
+    >
     >
       {/* Grid Background */}
       <div
